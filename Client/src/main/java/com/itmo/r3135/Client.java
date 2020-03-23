@@ -7,7 +7,7 @@ import java.nio.channels.DatagramChannel;
 
 public class Client {
     public static int port = 2622;
-    static byte[] b = {1, 2, 3, 4, 5, 62, 3, 4, 3, 5};
+    static byte[] b = {1, 2, 3, 4, 5, 2, 3, 4, 3, 5};
 
     public static void main(String[] args) throws IOException {
         System.out.println("Запуск клиента....");
