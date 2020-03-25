@@ -1,13 +1,14 @@
 package com.itmo.r3135.World;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
- * Класс com.itmo.r3135.World.Person.
+ * Класс com.itmo.com.itmo.r3135.World.Person.
  */
-public class Person {
+public class Person implements Serializable {
     private String name; //Поле не может быть null, Строка не может быть пустой
     private LocalDateTime birthday; //Поле не может быть null
     private Color eyeColor; //Поле не может быть null

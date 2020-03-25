@@ -1,11 +1,12 @@
 package com.itmo.r3135.World;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Класс com.itmo.r3135.World.Product.
+ * Класс com.itmo.com.itmo.r3135.World.Product.
  */
-public class Product implements Comparable<Product> {
+public class Product implements Comparable<Product>, Serializable {
     private int id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -27,7 +28,7 @@ public class Product implements Comparable<Product> {
     }
 
     /**
-     * Конструктор для класса com.itmo.r3135.World.Product
+     * Конструктор для класса com.itmo.com.itmo.r3135.World.Product
      *
      * @param name            - имя
      * @param coordinates     - класса координат
@@ -102,9 +103,9 @@ public class Product implements Comparable<Product> {
     }
 
     /**
-     * Возвращает координаты в формате класса com.itmo.r3135.World.Coordinates.
+     * Возвращает координаты в формате класса com.itmo.com.itmo.r3135.World.Coordinates.
      *
-     * @return - класс com.itmo.r3135.World.Coordinates
+     * @return - класс com.itmo.com.itmo.r3135.World.Coordinates
      */
     public Coordinates getCoordinates() {
         return coordinates;
