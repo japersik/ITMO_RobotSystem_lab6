@@ -1,14 +1,16 @@
 package com.itmo.r3135.World;
 
+import java.io.Serializable;
+
 /**
  * Класс координат.
  */
-public class Coordinates {
+public class Coordinates implements Serializable {
     private Float x; //Значение поля должно быть больше -50, Поле не может быть null
     private double y;
 
     /**
-     * Конструктор для класса com.itmo.r3135.World.Coordinates.
+     * Конструктор для класса com.itmo.com.itmo.r3135.World.Coordinates.
      *
      * @param x float.
      * @param y double.

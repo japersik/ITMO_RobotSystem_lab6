@@ -1,9 +1,11 @@
 package com.itmo.r3135.World;
 
+import java.io.Serializable;
+
 /**
  * Цвета
  */
-public enum Color {
+public enum Color implements Serializable {
     GREEN("Зелёный"),
     RED("Красный"),
     BLACK("Чёрный"),
