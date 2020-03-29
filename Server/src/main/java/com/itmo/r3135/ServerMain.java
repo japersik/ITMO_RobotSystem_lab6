@@ -1,7 +1,12 @@
 package com.itmo.r3135;
 
+import com.itmo.r3135.System.ClientMessage;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.*;
+import java.io.ObjectInputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 //Обязанности серверного приложения:
 //Работа с файлом, хранящим коллекцию.
 //Управление коллекцией объектов.
@@ -24,10 +29,30 @@ import java.net.*;
 public class ServerMain {
     private final static String FILENAME = "file.json";
     private static int port = 2622;
-    static byte[] b = new byte[10];
+    static byte[] b = new byte[100000];
 
     public static void main(String[] args) throws IOException {
-
+        System.out.println("Инициализация сервера:");
+        DatagramSocket socket = new DatagramSocket(port);
+        System.out.println("Запуск прошёл успешно, Потр: " + port);
+        DatagramPacket input = new DatagramPacket(b, b.length);
+        while (true) {
+            try {
+                socket.receive(input);
+                ObjectInputStream objectInputStream = new ObjectInputStream(
+                        new ByteArrayInputStream(b));
+                ClientMessage clientMessage = (ClientMessage) objectInputStream.readObject();
+                objectInputStream.close();
+                System.out.println("Принято:");
+                System.out.println(clientMessage.getCommand());
+                System.out.println(clientMessage.getString());
+                Thread.sleep(1000);
+            } catch (ClassNotFoundException | InterruptedException e) {
+                System.out.println("Ошибка сериализации");
+            }
+        }
+        //Это раюотает,нопока закомментировано для проверки связи
+        /*
         if (args.length < 1) {
             System.out.println("При запуске не был указан рбочий порт. Укаютите его в аргументах камандной строки");
             System.exit(0);
@@ -44,8 +69,11 @@ public class ServerMain {
 
         ServerManager serverManager = new ServerManager(port, FILENAME);
         serverManager.start();
+*/
 
 
+//Так должен работать приём - передача на сервере
+/*
         System.out.println("Инициализация сервера:");
         DatagramSocket socket = new DatagramSocket(port);
         System.out.println("Запуск прошёл успешно, Потр: " + port);
@@ -69,5 +97,6 @@ public class ServerMain {
             socket.send(output);
             System.out.println("Опправлено.");
         }
+    */
     }
 }

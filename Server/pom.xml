@@ -7,6 +7,24 @@
     <groupId>groupId</groupId>
     <artifactId>Server</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>Server</name>
+
+    <parent>
+        <groupId>r3135</groupId>
+        <artifactId>ITMO_RobotSystem_lab6</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>r3135</groupId>
+            <artifactId>WorldClasses</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -19,6 +37,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
