@@ -1,11 +1,11 @@
 package com.itmo.r3135;
 
-import com.itmo.r3135.System.ClientMessage;
+import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.CommandList;
+import com.itmo.r3135.System.ServerMessage;
 
 import java.io.IOException;
-import java.net.*;
-
+import java.net.SocketAddress;
 import java.nio.channels.DatagramChannel;
 
 
@@ -17,9 +17,13 @@ public class ClientWorker {
         manager = new SendReciveManager(socketAddress, datagramChannel);
     }
 
-    public void connectionCheck() {
+    public void connectionCheck() throws IOException {
 
-        manager.send(new ClientMessage(CommandList.CHECK,"Привет"));
-
+        manager.send(new Command(CommandList.CHECK, "Привет"));
+        ServerMessage recive = manager.recive();
+        if (recive!=null){
+            System.out.println(recive.getMessage());
+        }
     }
+
 }

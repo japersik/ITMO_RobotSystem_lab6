@@ -1,11 +1,9 @@
 package com.itmo.r3135;
 
-import com.itmo.r3135.System.ClientMessage;
+import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.ServerMessage;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
@@ -19,10 +17,10 @@ public class SendReciveManager {
         this.datagramChannel = datagramChannel;
     }
 
-    public void send(ClientMessage message) {
+    public void send(Command message) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream =new ObjectOutputStream(byteArrayOutputStream);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(message);
             byte[] bytearray = byteArrayOutputStream.toByteArray();
             objectOutputStream.close();
@@ -35,8 +33,27 @@ public class SendReciveManager {
         }
     }
 
-    public ServerMessage recive() {
-        //обраотка
-        return new ServerMessage("Good connect");
+    public ServerMessage recive() throws IOException {
+        byte[] b = new byte[10000];
+        ByteBuffer buffer = ByteBuffer.wrap(b);
+        datagramChannel.receive(buffer);
+        buffer.flip();
+        System.out.println("Канал закрыт. ");
+        System.out.println("Принято:");
+
+        return fromSerial(b);
+    }
+
+    private ServerMessage fromSerial(byte[] b) {
+        try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(
+                    new ByteArrayInputStream(b));
+            ServerMessage serverMessage = (ServerMessage) objectInputStream.readObject();
+            objectInputStream.close();
+            return serverMessage;
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Ошибка десериализации.");
+            return null;
+        }
     }
 }
