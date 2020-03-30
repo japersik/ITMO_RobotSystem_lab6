@@ -3,6 +3,7 @@ package com.itmo.r3135.System;
 import java.io.Serializable;
 
 public enum CommandList implements Serializable {
+    LOAD("LOAD"),
     HELP("help"),
     INFO("info"),
     ADD("add"),

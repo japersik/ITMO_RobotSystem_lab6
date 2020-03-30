@@ -1,12 +1,7 @@
 package com.itmo.r3135;
 
-import com.itmo.r3135.System.ClientMessage;
-
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.util.Scanner;
 //Обязанности серверного приложения:
 //Работа с файлом, хранящим коллекцию.
 //Управление коллекцией объектов.
@@ -15,10 +10,10 @@ import java.net.DatagramSocket;
 //Обработка полученных запросов (команд).
 
 // Серверное приложение должно состоять из следующих модулей (реализованных в виде одного или нескольких классов):
-//Модуль приёма подключений. ------Хм.... непонятно
+//Модуль приёма подключений. ------Worker
 //Модуль чтения запроса. ------ Ну ок, Reader
-//Модуль обработки полученных команд. ------Commander + commands-Package
-//Модуль отправки ответов клиенту.
+//Модуль обработки полученных команд. ------ commands-Package
+//Модуль отправки ответов клиенту. -------sender
 //Сервер должен работать в однпоточном режиме.
 
 
@@ -28,49 +23,53 @@ import java.net.DatagramSocket;
  */
 public class ServerMain {
     private final static String FILENAME = "file.json";
-    private static int port = 2622;
-    static byte[] b = new byte[100000];
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Инициализация сервера:");
-        DatagramSocket socket = new DatagramSocket(port);
-        System.out.println("Запуск прошёл успешно, Потр: " + port);
-        DatagramPacket input = new DatagramPacket(b, b.length);
-        while (true) {
-            try {
-                socket.receive(input);
-                ObjectInputStream objectInputStream = new ObjectInputStream(
-                        new ByteArrayInputStream(b));
-                ClientMessage clientMessage = (ClientMessage) objectInputStream.readObject();
-                objectInputStream.close();
-                System.out.println("Принято:");
-                System.out.println(clientMessage.getCommand());
-                System.out.println(clientMessage.getString());
-                Thread.sleep(1000);
-            } catch (ClassNotFoundException | InterruptedException e) {
-                System.out.println("Ошибка сериализации");
-            }
-        }
+//        System.out.println("Инициализация сервера:");
+//        DatagramSocket socket = new DatagramSocket(port);
+//        System.out.println("Запуск прошёл успешно, Потр: " + port);
+//        DatagramPacket input = new DatagramPacket(b, b.length);
+//        while (true) {
+//            try {
+//                socket.receive(input);
+//                ObjectInputStream objectInputStream = new ObjectInputStream(
+//                        new ByteArrayInputStream(b));
+//                Command command = (Command) objectInputStream.readObject();
+//                objectInputStream.close();
+//                System.out.println("Принято:");
+//                System.out.println(command.getCommand());
+//                System.out.println(command.getString());
+//                Thread.sleep(1000);
+//            } catch (ClassNotFoundException | InterruptedException e) {
+//                System.out.println("Ошибка сериализации");
+//            }
+//        }
         //Это раюотает,нопока закомментировано для проверки связи
-        /*
-        if (args.length < 1) {
-            System.out.println("При запуске не был указан рбочий порт. Укаютите его в аргументах камандной строки");
-            System.exit(0);
-        }
-        try {
-            if (Integer.valueOf(args[0]) < 0 || Integer.valueOf(args[0]) > 65535) {
-                System.out.println("Порт - число от 0 до 65535.");
+        Scanner input = new Scanner(System.in);
+        while (true) {
+
+            System.out.println("Для начала работы сервера введите порт или 'exit' для завершенеия программы.");
+            System.out.print("//: ");
+
+            String inputString = input.nextLine();
+            if (inputString.equals("exit")) {
+                System.out.println("Работа программы завершена.");
                 System.exit(0);
+
+            } else {
+                try {
+                    int port = Integer.valueOf(inputString);
+                    if (port < 0 || port > 65535) {
+                        System.out.println("Порт - число от 0 до 65535.");
+                    } else {
+                        ServerWorker worker = new ServerWorker(port, FILENAME);
+                        worker.start();
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Ошибка в записи номера порта.");
+                }
             }
-            port = Integer.valueOf(args[0]);
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка в формате записи числа.");
         }
-
-        ServerManager serverManager = new ServerManager(port, FILENAME);
-        serverManager.start();
-*/
-
 
 //Так должен работать приём - передача на сервере
 /*
