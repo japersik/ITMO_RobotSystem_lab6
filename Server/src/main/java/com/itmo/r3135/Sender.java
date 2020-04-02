@@ -24,7 +24,6 @@ public class Sender {
         DatagramPacket output = new DatagramPacket(message, message.length, addres, outPort);
         socket.send(output);
         System.out.println("Опправлено.");
-
     }
 
     private byte[] toSerial(ServerMessage serverMessage) throws IOException {

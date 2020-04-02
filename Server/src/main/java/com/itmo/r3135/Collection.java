@@ -29,6 +29,10 @@ public class Collection {
         this(null);
     }
 
+    public Date getDateInitialization() {
+        return dateInitialization;
+    }
+
     public Date getDateChange() {
         return dateChange;
     }

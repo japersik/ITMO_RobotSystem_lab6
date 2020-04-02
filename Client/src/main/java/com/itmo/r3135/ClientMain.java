@@ -2,7 +2,9 @@ package com.itmo.r3135;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.PortUnreachableException;
 import java.net.SocketAddress;
+import java.nio.channels.UnresolvedAddressException;
 import java.util.Scanner;
 // Полезная статья про сериализацию: https://habr.com/ru/post/431524/
 //Обязанности клиентского приложения:
@@ -36,13 +38,18 @@ public class ClientMain {
                     System.out.println("Запуск прошёл успешно, Потр: " + port + ". Адрес: " + socketAddress);
                     ClientWorker worker = new ClientWorker(socketAddress);
                     System.out.println("Проверка соединения:");
-                    worker.connectionCheck();
+                    if (worker.connectionCheck()) {
+                        worker.start();
+                    }
+                    ;
                 } catch (NumberFormatException e) {
                     System.out.println("Ошибка в записи номера порта.");
-                } catch (IndexOutOfBoundsException e) {
+                } catch (IndexOutOfBoundsException | UnresolvedAddressException e) {
                     System.out.println("Адрес введён некорректно.");
-                }catch (IOException e){
-                    System.out.println("Opps, IOException");
+                } catch (PortUnreachableException e) {
+                    System.out.println("Похоже, сервер по этому адрусе недоступен");
+                } catch (IOException | InterruptedException e) {
+                    System.out.println(e);
                 }
             }
         }

@@ -33,26 +33,38 @@ public class SendReciveManager {
         }
     }
 
-    public ServerMessage recive() throws IOException {
+    public ServerMessage recive() throws IOException, InterruptedException {
         byte[] b = new byte[10000];
         ByteBuffer buffer = ByteBuffer.wrap(b);
-        datagramChannel.receive(buffer);
+        SocketAddress from = null;
+        for (int i = 0; i < 10; i++) {
+            from = datagramChannel.receive(buffer);
+            if (from != null) break;
+            System.out.println("Попытка считать ответ" + i);
+            Thread.sleep(1000);
+        }
         buffer.flip();
-        System.out.println("Канал закрыт. ");
-        System.out.println("Принято:");
 
-        return fromSerial(b);
+        System.out.println("Принято:");
+        if (from != null) {
+            return fromSerial(b);
+        }
+        buffer.clear();
+        System.out.println("Ответ не был получен!");
+        return null;
     }
 
     private ServerMessage fromSerial(byte[] b) {
-        try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(
-                    new ByteArrayInputStream(b));
+        try (
+                ObjectInputStream objectInputStream = new ObjectInputStream(
+                        new ByteArrayInputStream(b));
+        ) {
             ServerMessage serverMessage = (ServerMessage) objectInputStream.readObject();
             objectInputStream.close();
             return serverMessage;
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Ошибка десериализации.");
+            System.out.println(e);
             return null;
         }
     }

@@ -91,17 +91,18 @@ public class ServerWorker implements Mediator {
     }
 
     public void start() throws SocketException {
-        System.out.println("Загрузка коллекции.");
-        loadCollectionCommand.activate(new Command(CommandList.LOAD));
         System.out.println("Инициализация сервера.");
         socket = new DatagramSocket(port);
         sender = new Sender(socket);
         reader = new Reader();
+        System.out.println("Загрузка коллекции.");
+        loadCollectionCommand.activate(new Command(CommandList.LOAD));
         System.out.println("Запуск прошёл успешно, Потр: " + port);
         byte[] b = new byte[10000];
         DatagramPacket input = new DatagramPacket(b, b.length);
         while (true) {
             try {
+
                 socket.receive(input);
                 ObjectInputStream objectInputStream = new ObjectInputStream(
                         new ByteArrayInputStream(b));
@@ -111,7 +112,8 @@ public class ServerWorker implements Mediator {
                 System.out.println(command.getCommand());
                 System.out.println(command.getString());
                 sender.send(processing(command), input);
-            } catch (ClassNotFoundException | IOException e) {
+                Thread.sleep(3000);
+            } catch (ClassNotFoundException | IOException | InterruptedException e) {
                 System.out.println("Ошибка сериализации");
             }
         }
