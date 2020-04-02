@@ -1,6 +1,7 @@
 package com.itmo.r3135;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.util.Scanner;
 //Обязанности серверного приложения:
 //Работа с файлом, хранящим коллекцию.
@@ -44,7 +45,6 @@ public class ServerMain {
 //                System.out.println("Ошибка сериализации");
 //            }
 //        }
-        //Это раюотает,нопока закомментировано для проверки связи
         Scanner input = new Scanner(System.in);
         while (true) {
 
@@ -67,6 +67,8 @@ public class ServerMain {
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Ошибка в записи номера порта.");
+                } catch (BindException e) {
+                    System.out.println("Этот порт уже занят.");
                 }
             }
         }
