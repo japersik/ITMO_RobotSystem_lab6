@@ -27,14 +27,13 @@ public class AddCommand extends AbstractCommand {
             addProduct.setId(uniqueoIdGeneration(products));
             if (addProduct.checkNull()) {
                 System.out.println("Элемент не удовлетворяет требованиям коллекции");
-                printRequest();
+                return new ServerMessage(printRequest());
             } else if (products.add(addProduct)) {
-                System.out.println("Элемент успешно добавлен.");
-            }
+                return new ServerMessage("Элемент успешно добавлен.");
+            } else return new ServerMessage("Ошибка добавления элеемнта в коллекцию");
         } catch (JsonSyntaxException ex) {
-            System.out.println("Возникла ошибка синтаксиса Json. Элемент не был добавлен");
+            return new ServerMessage("Возникла ошибка синтаксиса Json. Элемент не был добавлен");
         }
-        return null;
     }
 
     private int uniqueoIdGeneration(HashSet<Product> products) {
@@ -55,11 +54,11 @@ public class AddCommand extends AbstractCommand {
         }
     }
 
-    private void printRequest() {
-        System.out.println("------------------------");
-        System.out.println("Требования к элементу:");
-        System.out.println("------------------------");
-        System.out.println("Product: {\n" +
+    private String printRequest() {
+        return ("------------------------\n" +
+                "Требования к элементу:\n" +
+                "------------------------\n" +
+                "Product: {\n" +
                 "    String name --- Поле не может быть null, Строка не может быть пустой\n" +
                 "    Coordinates coordinates; --- Поле не может быть null\n" +
                 "    Long price --- Поле может быть null, Значение поля должно быть больше 0\n" +

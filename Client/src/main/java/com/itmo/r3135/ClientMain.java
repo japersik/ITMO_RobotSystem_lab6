@@ -6,7 +6,6 @@ import java.net.PortUnreachableException;
 import java.net.SocketAddress;
 import java.nio.channels.UnresolvedAddressException;
 import java.util.Scanner;
-// Полезная статья про сериализацию: https://habr.com/ru/post/431524/
 //Обязанности клиентского приложения:
 //Чтение команд из консоли.
 //Валидация вводимых данных.
@@ -15,20 +14,18 @@ import java.util.Scanner;
 //Обработка ответа от сервера (вывод результата исполнения команды в консоль).
 
 public class ClientMain {
-    //   public static int port = 2622;
-    //   static byte[] b = {1, 2, 3, 4, 5, 2, 3, 4, 3, 5};
-
     public static void main(String[] args) {
 
 
         Scanner input = new Scanner(System.in);
         while (true) {
+            System.out.println("Внимание! В тестовых целях сервер может обрабатывает 1 сообщение в 3 секунды!!!");
             System.out.println("Для начала работы с коллекцией ведите адрес сервера в формате \"адрес:порт\" или 'exit' для завершенеия программы.");
             System.out.print("//: ");
-            String inputString = input.nextLine();
+            String inputString = input.nextLine();// Полезная статья про сериализацию: https://habr.com/ru/post/431524/
+//
             if (inputString.equals("exit")) {
-                System.out.println("Работа программы завершена.");
-                System.exit(0);
+                break;
             } else {
                 try {
                     String[] trimString = inputString.trim().split(":", 2);
@@ -37,7 +34,6 @@ public class ClientMain {
                     SocketAddress socketAddress = new InetSocketAddress(addres, port);
                     System.out.println("Запуск прошёл успешно, Потр: " + port + ". Адрес: " + socketAddress);
                     ClientWorker worker = new ClientWorker(socketAddress);
-                    System.out.println("Проверка соединения:");
                     if (worker.connectionCheck()) {
                         worker.start();
                     }
@@ -52,32 +48,11 @@ public class ClientMain {
                     System.out.println(e);
                 }
             }
-        }
-    }/*
 
-        System.out.println("Запуск клиента....");
-        SocketAddress addres = new InetSocketAddress("localhost", port);
-        System.out.println("Запуск прошёл успешно, Потр: " + port + ". Адрес: " + addres);
-        System.out.println("Открытае канала");
-        DatagramChannel channel = DatagramChannel.open();
-        //channel.socket().bind(addres);
-        // channel.connect(addres);
-        System.out.println("Канал открыт");
-        System.out.println(addres);
-        ByteBuffer buffer = ByteBuffer.wrap(b);
-        // buffer.flip();
-        System.out.println("Отправление");
-        channel.send(buffer, addres);
-        System.out.println("Отправлено");
-        buffer.clear();
-        channel.receive(buffer);
-        buffer.flip();
-        channel.close();
-        System.out.println("Канал закрыт. ");
-        System.out.println("Принято:");
-        for (byte j : b) {
-            System.out.println(j);
         }
+        System.out.println("Работа программы завершена.");
+        System.exit(0);
     }
-*/
+
+
 }

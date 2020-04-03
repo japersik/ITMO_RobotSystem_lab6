@@ -128,8 +128,7 @@ public class ServerWorker implements Mediator {
                         System.out.println("Попытка соединиться");
                         return new ServerMessage("Good connect. Hallo from server!");
                     case HELP:
-                        helpCommand.activate(command);
-                        break;
+                        return helpCommand.activate(command);
                     case INFO:
                         //    info();
                         break;
@@ -137,51 +136,40 @@ public class ServerWorker implements Mediator {
                         showCommand.activate(command);
                         break;
                     case ADD:
-                        addCommand.activate(command);
+                        return addCommand.activate(command);
                         //      dateChange = new Date();
-                        break;
                     case UPDATE:
-                        updeteIdCommand.activate(command);
+                        return  updeteIdCommand.activate(command);
                         //    dateChange = new Date();
-                        break;
                     case REMOVE_BY_ID:
-                        removeByIdCommand.activate(command);
+                        return removeByIdCommand.activate(command);
                         //    dateChange = new Date();
-                        break;
                     case CLEAR:
-                        clearCommand.activate(command);
+                        return  clearCommand.activate(command);
                         //    dateChange = new Date();
-                        break;
 //                    case "save":
 //                        saveCommand.activate();
 //                        break;
                     case EXECUTE_SCRIPT:
-                        executeScriptCommand.activate(command);
-                        break;
+                       return executeScriptCommand.activate(command);
 //                    case "exit":
 //                        exitCommand.activate();
 //                        break;
                     case ADD_IF_MIN:
-                        addIfMinCommand.activate(command);
+                        return addIfMinCommand.activate(command);
                         //      dateChange = new Date();
-                        break;
                     case REMOVE_GREATER:
-                        removeGreaterCommand.activate(command);
+                       return removeGreaterCommand.activate(command);
                         //     dateChange = new Date();
-                        break;
                     case REMOVE_LOWER:
-                        removeLowerCommand.activate(command);
+                        return  removeLowerCommand.activate(command);
                         //      dateChange = new Date();
-                        break;
                     case GROUP_COUNTING_BY_COORDINATES:
-                        groupCountingByCoordinatesCommand.activate(command);
-                        break;
+                        return  groupCountingByCoordinatesCommand.activate(command);
                     case FILTER_CONTAINS_NAME:
-                        filterContainsNameCommand.activate(command);
-                        break;
+                        return filterContainsNameCommand.activate(command);
                     case PRINT_FIELD_DESCENDING_PRICE:
-                        printFieldDescendingPriceCommand.activate(command);
-                        break;
+                        return printFieldDescendingPriceCommand.activate(command);
                     default:
                         System.out.println("Неопознанная команда. Наберите 'help' для получения доступных команд.");
                 }

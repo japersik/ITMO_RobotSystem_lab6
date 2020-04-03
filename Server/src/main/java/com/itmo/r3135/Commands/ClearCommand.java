@@ -15,6 +15,7 @@ public class ClearCommand extends AbstractCommand {
     public ClearCommand(Collection collection, Mediator serverWorker) {
         super(collection, serverWorker);
     }
+
     /**
      * Очищает коллекцию.
      */
@@ -22,7 +23,7 @@ public class ClearCommand extends AbstractCommand {
     public ServerMessage activate(Command command) {
         HashSet<Product> products = collection.getProducts();
         products.clear();
-        System.out.println("Коллекция очищена.");
-        return null;
+        return new ServerMessage("Коллекция очищена.");
+
     }
 }
