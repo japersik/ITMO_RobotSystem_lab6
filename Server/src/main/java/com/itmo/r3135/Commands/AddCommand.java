@@ -27,7 +27,7 @@ public class AddCommand extends AbstractCommand {
             addProduct.setId(uniqueoIdGeneration(products));
             if (addProduct.checkNull()) {
                 System.out.println("Элемент не удовлетворяет требованиям коллекции");
-                return new ServerMessage(printRequest());
+                return new ServerMessage(Product.printRequest());
             } else if (products.add(addProduct)) {
                 return new ServerMessage("Элемент успешно добавлен.");
             } else return new ServerMessage("Ошибка добавления элеемнта в коллекцию");
@@ -52,43 +52,6 @@ public class AddCommand extends AbstractCommand {
                 return newId;
             }
         }
-    }
-
-    private String printRequest() {
-        return ("------------------------\n" +
-                "Требования к элементу:\n" +
-                "------------------------\n" +
-                "Product: {\n" +
-                "    String name --- Поле не может быть null, Строка не может быть пустой\n" +
-                "    Coordinates coordinates; --- Поле не может быть null\n" +
-                "    Long price --- Поле может быть null, Значение поля должно быть больше 0\n" +
-                "    String partNumber --- Длина строки должна быть не меньше 21, Поле не может быть null\n" +
-                "    manufactureCost --- Поле не может быть null;\n" +
-                "    UnitOfMeasure unitOfMeasure --- Поле не может быть null\n" +
-                "    Person owner --- Поле не может быть null\n" +
-                "}\n" +
-                "Coordinates: {\n" +
-                "    Float x --- Максимальное значение поля: 82, Поле не может быть null\n" +
-                "    Long y --- Значение поля должно быть больше -244, Поле не может быть null\n" +
-                "}\n" +
-                "Person: {\n" +
-                "    String name --- Поле не может быть null, Строка не может быть пустой\n" +
-                "    java.time.LocalDateTime birthday --- Поле не может быть null\n" +
-                "    Color eyeColor --- Поле не может быть null\n" +
-                "    Color hairColor --- Поле не может быть null\n" +
-                "}\n" +
-                "UnitOfMeasure: {\n" +
-                "    PCS,\n" +
-                "    LITERS,\n" +
-                "    GRAMS,\n" +
-                "    MILLIGRAMS;\n" +
-                "}\n" +
-                "Color: {\n" +
-                "    GREEN,\n" +
-                "    RED,\n" +
-                "    BLACK,\n" +
-                "    BLUE,\n" +
-                "    YELLOW;\n}");
     }
 
 }

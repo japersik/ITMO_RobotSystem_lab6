@@ -49,6 +49,7 @@ public class Product implements Comparable<Product>, Serializable {
         this.owner = owner;
         idCounter++;
     }
+
     /**
      * Проверяет элемент на сообтетвтвовение требованиям коллекции
      */
@@ -124,7 +125,42 @@ public class Product implements Comparable<Product>, Serializable {
     public int compareTo(Product o) {
         return (int) ((this.getPrice() - o.getPrice()) * 100);
     }
-
+    public static String printRequest() {
+        return ("------------------------\n" +
+                "Требования к элементу:\n" +
+                "------------------------\n" +
+                "Product: {\n" +
+                "    String name --- Поле не может быть null, Строка не может быть пустой\n" +
+                "    Coordinates coordinates; --- Поле не может быть null\n" +
+                "    Long price --- Поле может быть null, Значение поля должно быть больше 0\n" +
+                "    String partNumber --- Длина строки должна быть не меньше 21, Поле не может быть null\n" +
+                "    manufactureCost --- Поле не может быть null;\n" +
+                "    UnitOfMeasure unitOfMeasure --- Поле не может быть null\n" +
+                "    Person owner --- Поле не может быть null\n" +
+                "}\n" +
+                "Coordinates: {\n" +
+                "    Float x --- Максимальное значение поля: 82, Поле не может быть null\n" +
+                "    Long y --- Значение поля должно быть больше -244, Поле не может быть null\n" +
+                "}\n" +
+                "Person: {\n" +
+                "    String name --- Поле не может быть null, Строка не может быть пустой\n" +
+                "    java.time.LocalDateTime birthday --- Поле не может быть null\n" +
+                "    Color eyeColor --- Поле не может быть null\n" +
+                "    Color hairColor --- Поле не может быть null\n" +
+                "}\n" +
+                "UnitOfMeasure: {\n" +
+                "    PCS,\n" +
+                "    LITERS,\n" +
+                "    GRAMS,\n" +
+                "    MILLIGRAMS;\n" +
+                "}\n" +
+                "Color: {\n" +
+                "    GREEN,\n" +
+                "    RED,\n" +
+                "    BLACK,\n" +
+                "    BLUE,\n" +
+                "    YELLOW;\n}");
+    }
     @Override
     public String toString() {
         return "------------------------------------------------------------------------\n" +

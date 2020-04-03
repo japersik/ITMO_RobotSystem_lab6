@@ -6,7 +6,7 @@ import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.CommandList;
 import com.itmo.r3135.World.Product;
 
-public class KeyboardReader {
+public class StringCommandManager {
 
     private Gson gson;
 
@@ -14,7 +14,7 @@ public class KeyboardReader {
         gson = new Gson();
     }
 
-    public KeyboardReader() {
+    public StringCommandManager() {
     }
 
     public Command getCommandFromString(String stringCommand) {

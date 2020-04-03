@@ -6,7 +6,8 @@ import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.ServerMessage;
 import com.itmo.r3135.World.Product;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Класс обработки комадны show
@@ -23,10 +24,13 @@ public class ShowCommand extends AbstractCommand {
      */
     @Override
     public ServerMessage activate(Command command) {
-        HashSet<Product> products = collection.getProducts();
-        if (products.size() != 0)
+        ArrayList<Product> products = new ArrayList<>(collection.getProducts());
+        //Надо добавить сортировку
+        products.sort(Comparator.comparingInt(o -> o.getName().hashCode()));
+        if (products.size() != 0) {
             for (Product product : products) System.out.println(product);
-        else System.out.println("Коллекция пуста.");
-        return null;
+            return new ServerMessage("Список коллекции: ", products);
+        } else return new ServerMessage("Коллекция пуста.");
+
     }
 }

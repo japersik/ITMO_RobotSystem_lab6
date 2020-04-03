@@ -26,16 +26,13 @@ public class PrintFieldDescendingPriceCommand extends AbstractCommand {
     public ServerMessage activate(Command command) {
         HashSet<Product> products = collection.getProducts();
         if (!products.isEmpty()) {
-            ArrayList<Product> list = new ArrayList<>();
-            for (Product p : products) {
-                list.add(p);
-            }
-            list.sort((o1, o2) -> (int) ((o1.getPrice() - o2.getPrice()) * 100));
+            ArrayList<Product> list = new ArrayList<>(products);
+            list.sort((o1, o2) -> (int) ((o2.getPrice() - o1.getPrice()) * 100));
             System.out.printf("%-12s%5s%n", "ID", "Price");
-            for (Product p : list) {
-                System.out.printf("%-12d%5.2f%n", p.getId(), p.getPrice());
-            }
-        } else System.out.println("Коллекция пуста.");
-        return null;
+            return new ServerMessage("Сортировка в порядке убывания цены:", list);
+            //for (Product p : list) {
+            //   System.out.printf("%-12d%5.2f%n", p.getId(), p.getPrice());
+            // }
+        } else return new ServerMessage("Коллекция пуста.");
     }
 }
