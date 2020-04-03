@@ -28,6 +28,13 @@ public class Command implements Serializable {
         this.command = command;
         this.intValue = intValue;
     }
+
+    public Command(CommandList command, Product product, int intValue) {
+        this.product = product;
+        this.command = command;
+        this.intValue = intValue;
+    }
+
     public CommandList getCommand() {
         return command;
     }
