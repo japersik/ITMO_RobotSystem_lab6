@@ -33,11 +33,10 @@ public class RemoveLowerCommand extends AbstractCommand {
             if (startSize != 0) {
                 Product maxProduct = command.getProduct();
                 products.removeIf(p -> (p != null && p.compareTo(maxProduct) < 0));
-                System.out.println("Удалено " + (startSize - products.size()) + " элементов");
-            } else System.out.println("Коллекция пуста");
+                return new ServerMessage("Удалено " + (startSize - products.size()) + " элементов");
+            } else return new ServerMessage("Коллекция пуста");
         } catch (JsonSyntaxException ex) {
-            System.out.println("Возникла ошибка синтаксиса Json.");
+            return new ServerMessage("Возникла ошибка синтаксиса Json.");
         }
-        return null;
     }
 }

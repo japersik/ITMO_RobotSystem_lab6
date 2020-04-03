@@ -16,10 +16,9 @@ public class RemoveByIdCommand extends AbstractCommand {
     public RemoveByIdCommand(Collection collection, Mediator serverWorker) {
         super(collection, serverWorker);
     }
+
     /**
      * Удаляет элемент по его id.
-     *
-     * @param input id удаляемого элемента.
      */
     @Override
     public ServerMessage activate(Command command) {
@@ -30,14 +29,13 @@ public class RemoveByIdCommand extends AbstractCommand {
             for (Product p : products) {
                 if (p.getId() == id) {
                     products.remove(p);
-                    System.out.println("Элемент коллекции успешно удалён.");
-                    break;
+                    return new ServerMessage("Элемент коллекции успешно удалён.");
                 }
             }
             if (startSize == products.size()) {
-                System.out.println("Элемент с id " + id + " не существует.");
+                return new ServerMessage("Элемент с id " + id + " не существует.");
             }
-        } else System.out.println("Коллекция пуста.");
+        } else return new ServerMessage("Коллекция пуста.");
         return null;
     }
 }

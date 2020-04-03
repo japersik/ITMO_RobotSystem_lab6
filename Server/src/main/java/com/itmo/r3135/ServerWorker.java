@@ -133,39 +133,38 @@ public class ServerWorker implements Mediator {
                         //    info();
                         break;
                     case SHOW:
-                        showCommand.activate(command);
-                        break;
+                        return showCommand.activate(command);
                     case ADD:
                         return addCommand.activate(command);
-                        //      dateChange = new Date();
+                    //      dateChange = new Date();
                     case UPDATE:
-                        return  updeteIdCommand.activate(command);
-                        //    dateChange = new Date();
+                        return updeteIdCommand.activate(command);
+                    //    dateChange = new Date();
                     case REMOVE_BY_ID:
                         return removeByIdCommand.activate(command);
-                        //    dateChange = new Date();
+                    //    dateChange = new Date();
                     case CLEAR:
-                        return  clearCommand.activate(command);
-                        //    dateChange = new Date();
+                        return clearCommand.activate(command);
+                    //    dateChange = new Date();
 //                    case "save":
 //                        saveCommand.activate();
 //                        break;
                     case EXECUTE_SCRIPT:
-                       return executeScriptCommand.activate(command);
+                        return executeScriptCommand.activate(command);
 //                    case "exit":
 //                        exitCommand.activate();
 //                        break;
                     case ADD_IF_MIN:
                         return addIfMinCommand.activate(command);
-                        //      dateChange = new Date();
+                    //      dateChange = new Date();
                     case REMOVE_GREATER:
-                       return removeGreaterCommand.activate(command);
-                        //     dateChange = new Date();
+                        return removeGreaterCommand.activate(command);
+                    //     dateChange = new Date();
                     case REMOVE_LOWER:
-                        return  removeLowerCommand.activate(command);
-                        //      dateChange = new Date();
+                        return removeLowerCommand.activate(command);
+                    //      dateChange = new Date();
                     case GROUP_COUNTING_BY_COORDINATES:
-                        return  groupCountingByCoordinatesCommand.activate(command);
+                        return groupCountingByCoordinatesCommand.activate(command);
                     case FILTER_CONTAINS_NAME:
                         return filterContainsNameCommand.activate(command);
                     case PRINT_FIELD_DESCENDING_PRICE:

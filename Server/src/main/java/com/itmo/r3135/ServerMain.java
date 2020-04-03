@@ -23,7 +23,7 @@ import java.util.Scanner;
  * @author vladislav
  */
 public class ServerMain {
-    private final static String FILENAME = "file.json";
+    private final static String FILENAME = "1.json";
 
     public static void main(String[] args) throws IOException {
 //        System.out.println("Инициализация сервера:");

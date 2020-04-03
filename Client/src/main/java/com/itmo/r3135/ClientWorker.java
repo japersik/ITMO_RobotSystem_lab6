@@ -3,6 +3,7 @@ package com.itmo.r3135;
 import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.CommandList;
 import com.itmo.r3135.System.ServerMessage;
+import com.itmo.r3135.World.Product;
 
 import java.io.IOException;
 import java.net.SocketAddress;
@@ -14,10 +15,10 @@ public class ClientWorker {
     private SendReciveManager manager;
     private DatagramChannel datagramChannel = DatagramChannel.open();
     private SocketAddress socketAddress;
-    private KeyboardReader keyboardReader;
+    private StringCommandManager stringCommandManager;
 
     {
-        keyboardReader = new KeyboardReader();
+        stringCommandManager = new StringCommandManager();
     }
 
     public ClientWorker(SocketAddress socketAddress) throws IOException {
@@ -35,14 +36,17 @@ public class ClientWorker {
                     break;
                 } else {
                     commandString = commandReader.nextLine();
-                    Command command = keyboardReader.getCommandFromString(commandString);
+                    Command command = stringCommandManager.getCommandFromString(commandString);
                     if (command != null)
                         if (this.connectionCheck()) {
                             manager.send(command);
                             ServerMessage message = manager.recive();
                             if (message != null) {
-                                System.out.println(message.getMessage());
-                            }else System.out.println("Ответ cервера некорректен");
+                                if (message.getMessage() != null)
+                                    System.out.println(message.getMessage());
+                                if (message.getProducts() != null)
+                                    for (Product p : message.getProducts()) System.out.println(p);
+                            } else System.out.println("Ответ cервера некорректен");
                         } else System.out.println("Подключение потеряно.");
                 }
                 System.out.print("//: ");

@@ -21,8 +21,6 @@ public class AddIfMinCommand extends AbstractCommand {
 
     /**
      * Добавляет новый элемент в коллекцию, если его значение меньше, чем у наименьшего элемента этой коллекции.
-     *
-     * @param jsonString сторка элемента в формате json.
      */
     @Override
     public ServerMessage activate(Command command) {
@@ -33,10 +31,10 @@ public class AddIfMinCommand extends AbstractCommand {
                 Product minElem = Collections.min(products);
                 if (addProduct.compareTo(minElem) < 0) {
                     serverWorker.processing(new Command(CommandList.ADD, addProduct));
-                } else System.out.println("Элемент не минимальный!");
-            } else System.out.println("Коллекция пуста, минимальный элемент отсутствует.");
+                } else return new ServerMessage("Элемент не минимальный!");
+            } else return new ServerMessage("Коллекция пуста, минимальный элемент отсутствует.");
         } catch (JsonSyntaxException ex) {
-            System.out.println("Возникла ошибка синтаксиса Json. Элемент не был добавлен");
+            return new ServerMessage("Возникла ошибка синтаксиса Json. Элемент не был добавлен");
         }
         return null;
     }

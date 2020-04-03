@@ -30,6 +30,7 @@ public class SendReciveManager {
             System.out.println("Сообщение отправлено");
         } catch (IOException e) {
             System.out.println("IOException во время отправки");
+            System.out.println(e);
         }
     }
 

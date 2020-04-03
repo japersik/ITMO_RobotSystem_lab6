@@ -15,10 +15,5 @@ public abstract class AbstractCommand {
     }
 
     public abstract ServerMessage activate(Command command);
-    protected ServerMessage activateCommand(Command command) {
-      return serverWorker.processing(command);
-    }
-//    public ServerMessage activate(){
-//        activate(new Command());
 //    }
 }
