@@ -22,6 +22,9 @@ public class ClientMain {
             System.out.println("Внимание! В тестовых целях сервер может обрабатывает 1 сообщение в 3 секунды!!!");
             System.out.println("Для начала работы с коллекцией ведите адрес сервера в формате \"адрес:порт\" или 'exit' для завершенеия программы.");
             System.out.print("//: ");
+            if (!input.hasNextLine()) {
+                break;
+            }
             String inputString = input.nextLine();
             if (inputString.equals("exit")) {
                 break;
@@ -34,7 +37,8 @@ public class ClientMain {
                     System.out.println("Запуск прошёл успешно, Потр: " + port + ". Адрес: " + socketAddress);
                     ClientWorker worker = new ClientWorker(socketAddress);
                     if (worker.connectionCheck()) {
-                        worker.start();
+                        worker.startWork();
+                        break;
                     }
                     ;
                 } catch (NumberFormatException e) {

@@ -26,31 +26,14 @@ public class ServerMain {
     private final static String FILENAME = "file.json";
 
     public static void main(String[] args) throws IOException {
-//        System.out.println("Инициализация сервера:");
-//        DatagramSocket socket = new DatagramSocket(port);
-//        System.out.println("Запуск прошёл успешно, Потр: " + port);
-//        DatagramPacket input = new DatagramPacket(b, b.length);
-//        while (true) {
-//            try {
-//                socket.receive(input);
-//                ObjectInputStream objectInputStream = new ObjectInputStream(
-//                        new ByteArrayInputStream(b));
-//                Command command = (Command) objectInputStream.readObject();
-//                objectInputStream.close();
-//                System.out.println("Принято:");
-//                System.out.println(command.getCommand());
-//                System.out.println(command.getString());
-//                Thread.sleep(1000);
-//            } catch (ClassNotFoundException | InterruptedException e) {
-//                System.out.println("Ошибка сериализации");
-//            }
-//        }
         Scanner input = new Scanner(System.in);
         while (true) {
 
             System.out.println("Для начала работы сервера введите порт или 'exit' для завершенеия программы.");
             System.out.print("//: ");
-
+            if (!input.hasNextLine()) {
+                break;
+            }
             String inputString = input.nextLine();
             if (inputString.equals("exit")) {
                 System.out.println("Работа программы завершена.");
@@ -63,7 +46,8 @@ public class ServerMain {
                         System.out.println("Порт - число от 0 до 65535.");
                     } else {
                         ServerWorker worker = new ServerWorker(port, FILENAME);
-                        worker.start();
+                        worker.startWork();
+                        break;
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Ошибка в записи номера порта.");
@@ -71,6 +55,7 @@ public class ServerMain {
                     System.out.println("Этот порт уже занят.");
                 }
             }
+            System.out.println("Работа сервера заверщена.");
         }
 
 //Так должен работать приём - передача на сервере

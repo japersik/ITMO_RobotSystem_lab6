@@ -6,13 +6,12 @@ import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.CommandList;
 import com.itmo.r3135.System.ServerMessage;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 
 
 public class ServerWorker implements Mediator {
@@ -21,7 +20,7 @@ public class ServerWorker implements Mediator {
     private Gson gson;
     private Collection collection;
     private Sender sender;
-   // private Reader reader;
+    private Reader reader;
 
     private AbstractCommand loadCollectionCommand;
     private AbstractCommand addCommand;
@@ -36,10 +35,12 @@ public class ServerWorker implements Mediator {
     private AbstractCommand filterContainsNameCommand;
     private AbstractCommand removeLowerCommand;
     private AbstractCommand removeGreaterCommand;
-    //    private AbstractCommand exitCommand;
     private AbstractCommand executeScriptCommand;
-//    private AbstractCommand saveCommand;
 
+    private AbstractCommand saveCommand;
+    private AbstractCommand exitCommand;
+    private boolean workingReady;
+    private static final Semaphore SEMAPHORE = new Semaphore(1, true);
 
     {
         gson = new Gson();
@@ -57,9 +58,9 @@ public class ServerWorker implements Mediator {
         filterContainsNameCommand = new FilterContainsNameCommand(collection, this);
         removeLowerCommand = new RemoveLowerCommand(collection, this);
         removeGreaterCommand = new RemoveGreaterCommand(collection, this);
-        //      exitCommand = new ExitCommand(this);
         executeScriptCommand = new ExecuteScriptCommand(collection, this);
-        //      saveCommand = new SaveCommand(this);
+        saveCommand = new SaveCommand(collection, this);
+        exitCommand = new ExitCommand(collection, this);
     }
 
     public ServerWorker(int port, String fileName) {
@@ -89,7 +90,8 @@ public class ServerWorker implements Mediator {
 
 
     }
-//public void start() throws SocketException {
+
+//    public void startWork() throws SocketException {
 //        System.out.println("Инициализация сервера.");
 //        socket = new DatagramSocket(port);
 //        sender = new Sender(socket);
@@ -97,9 +99,15 @@ public class ServerWorker implements Mediator {
 //        System.out.println("Загрузка коллекции.");
 //        loadCollectionCommand.activate(new Command(CommandList.LOAD));
 //        System.out.println("Запуск прошёл успешно, Потр: " + port);
-//
+//        Thread lal = new Thread(this);
+//        lal.setDaemon(true);
+//        lal.start();
+//        Scanner input = new Scanner(System.in);
 //        while (true) {
-//            try {
+////            try {
+////            if (input.hasNextLine())
+//                System.out.println(input.nextLine());
+//            else break;
 //                Command command = reader.nextCommand();
 //                System.out.println("Принято:");
 //                System.out.println(command.getCommand());
@@ -108,33 +116,69 @@ public class ServerWorker implements Mediator {
 //                Thread.sleep(3000);
 //            } catch (IOException | InterruptedException e) {
 //                System.out.println("Ошибка сериализации");
-//            }
 //        }
+//        }
+//
 //    }
-    public void start() throws SocketException {
+
+    public void startWork() throws SocketException {
+
         System.out.println("Инициализация сервера.");
         socket = new DatagramSocket(port);
         sender = new Sender(socket);
-    //    reader = new Reader();
+        reader = new Reader(socket);
         System.out.println("Загрузка коллекции.");
         loadCollectionCommand.activate(new Command(CommandList.LOAD));
         System.out.println("Запуск прошёл успешно, Потр: " + port);
-        byte[] b = new byte[10000];
-        DatagramPacket input = new DatagramPacket(b, b.length);
+        workingReady = true;
+        Thread keyBoard = new Thread(() -> keyBoardWork());
+        Thread datagramm = new Thread(() -> datagrammWork());
+        keyBoard.setDaemon(false);
+        datagramm.setDaemon(true);
+        keyBoard.start();
+        datagramm.start();
+
+    }
+
+    public void keyBoardWork() {
+        try (Scanner input = new Scanner(System.in);) {
+            while (true) {
+                System.out.println("//:");
+                if (input.hasNextLine()) {
+                    String inputString = input.nextLine();
+                    SEMAPHORE.acquire();
+                    switch (inputString) {
+                        case "exit":
+                            processing(new Command(CommandList.SAVE));
+                            processing(new Command(CommandList.EXIT));
+                            break;
+                        case "save":
+                            processing(new Command(CommandList.SAVE));
+                            break;
+                        default:
+                            System.out.println("Доступные команды сервера: save, exit.");
+                    }
+                    SEMAPHORE.release();
+                } else processing(new Command(CommandList.EXIT));
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void datagrammWork() {
         while (true) {
             try {
-
-                socket.receive(input);
-                ObjectInputStream objectInputStream = new ObjectInputStream(
-                        new ByteArrayInputStream(b));
-                Command command = (Command) objectInputStream.readObject();
-                objectInputStream.close();
+                Command command = reader.nextCommand();
+                SEMAPHORE.acquire();
                 System.out.println("Принято:");
                 System.out.println(command.getCommand());
                 System.out.println(command.getString());
-                sender.send(processing(command), input);
+                sender.send(processing(command), reader.getInput());
                 Thread.sleep(3000);
-            } catch (ClassNotFoundException | IOException | InterruptedException e) {
+                SEMAPHORE.release();
+
+            } catch (IOException | InterruptedException e) {
                 System.out.println("Ошибка сериализации");
             }
         }
@@ -190,8 +234,12 @@ public class ServerWorker implements Mediator {
                         return filterContainsNameCommand.activate(command);
                     case PRINT_FIELD_DESCENDING_PRICE:
                         return printFieldDescendingPriceCommand.activate(command);
+                    case SAVE:
+                        return saveCommand.activate(command);
+                    case EXIT:
+                        return exitCommand.activate(command);
                     default:
-                        System.out.println("Неопознанная команда. Наберите 'help' для получения доступных команд.");
+                        System.out.println("Неопознанная команда.");
                 }
             } catch (NumberFormatException ex) {
                 System.out.println("Где-то проблема с форматом записи числа.Команда не выполнена");
