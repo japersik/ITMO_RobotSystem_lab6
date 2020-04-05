@@ -6,7 +6,9 @@ import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.ServerMessage;
 import com.itmo.r3135.World.Product;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class RemoveByIdCommand extends AbstractCommand {
 
@@ -26,16 +28,12 @@ public class RemoveByIdCommand extends AbstractCommand {
         int startSize = products.size();
         if (products.size() > 0) {
             int id = command.getIntValue();
-            for (Product p : products) {
-                if (p.getId() == id) {
-                    products.remove(p);
-                    return new ServerMessage("Элемент коллекции успешно удалён.");
-                }
-            }
+            products.removeAll((products.stream().filter(product -> product.getId() == id)
+                    .collect(Collectors.toCollection(HashSet::new))));
             if (startSize == products.size()) {
                 return new ServerMessage("Элемент с id " + id + " не существует.");
             }
+            return new ServerMessage("Элемент коллекции успешно удалён.");
         } else return new ServerMessage("Коллекция пуста.");
-        return null;
     }
 }
