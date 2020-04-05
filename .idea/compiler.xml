@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="WorldClasses" />
+        <module name="Server" />
+        <module name="Client" />
+        <module name="oldprjct" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Client" target="1.8" />
+      <module name="ITMO_RobotSystem_lab6" target="1.5" />
+      <module name="oldprjct" target="1.8" />
+      <module name="Server" target="1.8" />
+      <module name="WorldClasses" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
