@@ -29,7 +29,8 @@ public class FilterContainsNameCommand extends AbstractCommand {
         int findProdukts = 0;
         if (products.size() > 0) {
             if (!command.getString().isEmpty() && command.getString() != null) {
-                productsList = new ArrayList<>(products.stream().filter(product -> product.getName().contains(command.getString())).collect(Collectors.toCollection(ArrayList::new)));
+                productsList = products.stream().filter(product -> product.getName().contains(command.getString()))
+                        .collect(Collectors.toCollection(ArrayList::new));
 
                 return new ServerMessage("Всего найдено " + findProdukts + " элементов.",productsList);
             } else return new ServerMessage("Ошибка ввода имени.");

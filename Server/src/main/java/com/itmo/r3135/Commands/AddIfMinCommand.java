@@ -10,6 +10,7 @@ import com.itmo.r3135.World.Product;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * Класс обработки комадны add_if_min
@@ -28,7 +29,7 @@ public class AddIfMinCommand extends AbstractCommand {
         try {
             if (products.size() != 0) {
                 Product addProduct = command.getProduct();
-                Product minElem = Collections.min(products);
+                Product minElem = products.stream().min(Product::compareTo).get();
                 if (addProduct.compareTo(minElem) < 0) {
                     serverWorker.processing(new Command(CommandList.ADD, addProduct));
                 } else return new ServerMessage("Элемент не минимальный!");
