@@ -1,10 +1,12 @@
-package com.itmo.r3135;
+package com.itmo.r3135.System.Tools;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.CommandList;
 import com.itmo.r3135.World.Product;
+
+import java.util.ArrayList;
 
 public class StringCommandManager {
 
@@ -60,7 +62,13 @@ public class StringCommandManager {
                         command = new Command(CommandList.CLEAR);
                         break;
                     case "execute_script":
-                        command = new Command(CommandList.EXECUTE_SCRIPT);
+                        ArrayList<Command> commands = ScriptReader.read(trimCommand[1]);
+                        if (!commands.isEmpty()) {
+                            command = new Command(CommandList.EXECUTE_SCRIPT, commands);
+                        } else {
+                            System.out.println("Скрипт пуст.");
+                            command = null;
+                        }
                         break;
                     case "exit":
                         System.exit(0);
@@ -68,7 +76,7 @@ public class StringCommandManager {
                         break;
                     case "add_if_min":
                         product = gson.fromJson(trimCommand[1], Product.class);
-                        if (product.checkNull()) command = new Command(CommandList.ADD_IF_MIN, product);
+                        if (!product.checkNull()) command = new Command(CommandList.ADD_IF_MIN, product);
                         else {
                             System.out.println("Элемент не удавлетворяет требованиям коллекции");
                             command = null;
@@ -76,7 +84,7 @@ public class StringCommandManager {
                         break;
                     case "remove_greater":
                         product = gson.fromJson(trimCommand[1], Product.class);
-                        if (product.checkNull()) return new Command(CommandList.REMOVE_GREATER, product);
+                        if (!product.checkNull()) return new Command(CommandList.REMOVE_GREATER, product);
                         else {
                             System.out.println("Элемент не удавлетворяет требованиям коллекции");
                             command = null;
@@ -84,7 +92,7 @@ public class StringCommandManager {
                         break;
                     case "remove_lower":
                         product = gson.fromJson(trimCommand[1], Product.class);
-                        if (product.checkNull()) return new Command(CommandList.REMOVE_LOWER, product);
+                        if (!product.checkNull()) return new Command(CommandList.REMOVE_LOWER, product);
                         else {
                             System.out.println("Элемент не удавлетворяет требованиям коллекции");
                             command = null;
@@ -94,7 +102,7 @@ public class StringCommandManager {
                         command = new Command(CommandList.GROUP_COUNTING_BY_COORDINATES);
                         break;
                     case "filter_contains_name":
-                        command = new Command(CommandList.FILTER_CONTAINS_NAME);
+                        command = new Command(CommandList.FILTER_CONTAINS_NAME, trimCommand[1]);
                         break;
                     case "print_field_descending_price":
                         command = new Command(CommandList.PRINT_FIELD_DESCENDING_PRICE);

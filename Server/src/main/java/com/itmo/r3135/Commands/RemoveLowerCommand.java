@@ -8,8 +8,8 @@ import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.ServerMessage;
 import com.itmo.r3135.World.Product;
 
-
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * Класс обработки комадны remove_lower
@@ -22,8 +22,6 @@ public class RemoveLowerCommand extends AbstractCommand {
 
     /**
      * Удаляет из коллекции все элементы, меньшие, чем заданный.
-     *
-     * @param jsonString сторка элемента в формате json.
      */
     @Override
     public ServerMessage activate(Command command) {
@@ -31,8 +29,7 @@ public class RemoveLowerCommand extends AbstractCommand {
         try {
             int startSize = products.size();
             if (startSize != 0) {
-                Product maxProduct = command.getProduct();
-                products.removeIf(p -> (p != null && p.compareTo(maxProduct) < 0));
+                products.removeAll((products.stream().filter(product -> 0 < product.compareTo(command.getProduct()))).collect(Collectors.toCollection(HashSet::new)));
                 return new ServerMessage("Удалено " + (startSize - products.size()) + " элементов");
             } else return new ServerMessage("Коллекция пуста");
         } catch (JsonSyntaxException ex) {

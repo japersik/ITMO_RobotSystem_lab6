@@ -7,10 +7,10 @@ import java.net.SocketAddress;
 import java.nio.channels.UnresolvedAddressException;
 import java.util.Scanner;
 //Обязанности клиентского приложения:
-//Чтение команд из консоли.
+//есть-Чтение команд из консоли.
 //Валидация вводимых данных.
-//Сериализация введённой команды и её аргументов.
-//Отправка полученной команды и её аргументов на сервер.
+//есть-Сериализация введённой команды и её аргументов.
+//есть-Отправка полученной команды и её аргументов на сервер.
 //Обработка ответа от сервера (вывод результата исполнения команды в консоль).
 
 public class ClientMain {
@@ -22,8 +22,7 @@ public class ClientMain {
             System.out.println("Внимание! В тестовых целях сервер может обрабатывает 1 сообщение в 3 секунды!!!");
             System.out.println("Для начала работы с коллекцией ведите адрес сервера в формате \"адрес:порт\" или 'exit' для завершенеия программы.");
             System.out.print("//: ");
-            String inputString = input.nextLine();// Полезная статья про сериализацию: https://habr.com/ru/post/431524/
-//
+            String inputString = input.nextLine();
             if (inputString.equals("exit")) {
                 break;
             } else {
