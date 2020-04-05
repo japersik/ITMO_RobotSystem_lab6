@@ -42,15 +42,20 @@ public class StringCommandManager {
                         break;
                     case "add":
                         product = gson.fromJson(trimCommand[1], Product.class);
-                        command = new Command(CommandList.ADD, product);
+                        if (!product.checkNull())
+                            command = new Command(CommandList.ADD, product);
+                        else {
+                            System.out.println("Элемент "+product.getName()+ " не удовлетворяет требованиям коллекции.");
+                            command = null;
+                        }
                         break;
                     case "update":
                         id = Integer.valueOf(trimCommand[1].trim().split(" ", 2)[0]);
                         product = gson.fromJson(trimCommand[1].trim().split(" ", 2)[1], Product.class);
-                        if (product.checkNull())
+                        if (!product.checkNull())
                             command = new Command(CommandList.UPDATE, product, id);
                         else {
-                            System.out.println("Элемент не удавлетворяет требованиям коллекции");
+                            System.out.println("Элемент "+product.getName()+ " не удовлетворяет требованиям коллекции.");
                             command = null;
                         }
                         break;
@@ -78,7 +83,7 @@ public class StringCommandManager {
                         product = gson.fromJson(trimCommand[1], Product.class);
                         if (!product.checkNull()) command = new Command(CommandList.ADD_IF_MIN, product);
                         else {
-                            System.out.println("Элемент не удавлетворяет требованиям коллекции");
+                            System.out.println("Элемент "+product.getName()+ " не удовлетворяет требованиям коллекции.");
                             command = null;
                         }
                         break;
@@ -86,7 +91,7 @@ public class StringCommandManager {
                         product = gson.fromJson(trimCommand[1], Product.class);
                         if (!product.checkNull()) return new Command(CommandList.REMOVE_GREATER, product);
                         else {
-                            System.out.println("Элемент не удавлетворяет требованиям коллекции");
+                            System.out.println("Элемент "+product.getName()+" не удовлетворяет требованиям коллекции");
                             command = null;
                         }
                         break;
@@ -94,7 +99,7 @@ public class StringCommandManager {
                         product = gson.fromJson(trimCommand[1], Product.class);
                         if (!product.checkNull()) return new Command(CommandList.REMOVE_LOWER, product);
                         else {
-                            System.out.println("Элемент не удавлетворяет требованиям коллекции");
+                            System.out.println("Элемент "+product.getName()+ " не удовлетворяет требованиям коллекции.");
                             command = null;
                         }
                         break;

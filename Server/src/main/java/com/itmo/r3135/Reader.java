@@ -19,9 +19,9 @@ public class Reader {
     }
 
     public Command nextCommand() throws IOException {
+        socket.receive(input);
         try (ObjectInputStream objectInputStream = new ObjectInputStream(
                 new ByteArrayInputStream(b));) {
-            socket.receive(input);
             Command command = (Command) objectInputStream.readObject();
             objectInputStream.close();
             return command;

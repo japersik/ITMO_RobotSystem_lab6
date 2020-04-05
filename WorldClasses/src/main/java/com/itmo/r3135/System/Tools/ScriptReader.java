@@ -33,8 +33,11 @@ public class ScriptReader {
             VirtualStack virtualStack = new VirtualStack();
             StringCommandManager stringCommandManager = new StringCommandManager();
             ArrayList<String> executeStringCommands = virtualStack.stackGenerate(script);
+            System.out.println("Анализ содердимого команд:");
             for (String executeStringCommand : executeStringCommands) {
-                executeCommands.add(stringCommandManager.getCommandFromString(executeStringCommand));
+                Command executeCommand = stringCommandManager.getCommandFromString(executeStringCommand);
+                if (executeCommand != null)
+                    executeCommands.add(executeCommand);
             }
             System.out.println("Анализ завершён.");
             if (!executeStringCommands.isEmpty()) {

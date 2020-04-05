@@ -28,7 +28,7 @@ public class ClientWorker {
         datagramChannel.configureBlocking(false);
     }
 
-    public void start() throws IOException, InterruptedException {
+    public void startWork() throws IOException, InterruptedException {
         String commandString = "";
         try (Scanner commandReader = new Scanner(System.in)) {
             System.out.print("//: ");

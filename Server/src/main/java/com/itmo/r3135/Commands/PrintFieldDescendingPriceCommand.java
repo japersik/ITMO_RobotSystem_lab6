@@ -9,6 +9,7 @@ import com.itmo.r3135.World.Product;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * Класс обработки комадны print_field_descending_price
@@ -26,8 +27,8 @@ public class PrintFieldDescendingPriceCommand extends AbstractCommand {
     public ServerMessage activate(Command command) {
         HashSet<Product> products = collection.getProducts();
         if (!products.isEmpty()) {
-            ArrayList<Product> list = new ArrayList<>(products);
-            list.sort((o1, o2) -> (int) ((o2.getPrice() - o1.getPrice()) * 100));
+//            list.sort((o1, o2) -> (int) ((o2.getPrice() - o1.getPrice()) * 100));
+            ArrayList<Product> list = products.stream().sorted((o1, o2) -> (int) ((o2.getPrice() - o1.getPrice()) * 100)).collect(Collectors.toCollection(ArrayList::new));
             System.out.printf("%-12s%5s%n", "ID", "Price");
             return new ServerMessage("Сортировка в порядке убывания цены:", list);
             //for (Product p : list) {
