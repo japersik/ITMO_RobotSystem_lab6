@@ -94,7 +94,7 @@ public class StringCommandManager {
                         command = new Command(CommandList.GROUP_COUNTING_BY_COORDINATES);
                         break;
                     case "filter_contains_name":
-                        command = new Command(CommandList.FILTER_CONTAINS_NAME);
+                        command = new Command(CommandList.FILTER_CONTAINS_NAME,trimCommand[1]);
                         break;
                     case "print_field_descending_price":
                         command = new Command(CommandList.PRINT_FIELD_DESCENDING_PRICE);
