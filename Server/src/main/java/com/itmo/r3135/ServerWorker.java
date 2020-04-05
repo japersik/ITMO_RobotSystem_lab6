@@ -21,7 +21,7 @@ public class ServerWorker implements Mediator {
     private Gson gson;
     private Collection collection;
     private Sender sender;
-    private Reader reader;
+   // private Reader reader;
 
     private AbstractCommand loadCollectionCommand;
     private AbstractCommand addCommand;
@@ -89,12 +89,33 @@ public class ServerWorker implements Mediator {
 
 
     }
-
+//public void start() throws SocketException {
+//        System.out.println("Инициализация сервера.");
+//        socket = new DatagramSocket(port);
+//        sender = new Sender(socket);
+//        reader = new Reader(socket);
+//        System.out.println("Загрузка коллекции.");
+//        loadCollectionCommand.activate(new Command(CommandList.LOAD));
+//        System.out.println("Запуск прошёл успешно, Потр: " + port);
+//
+//        while (true) {
+//            try {
+//                Command command = reader.nextCommand();
+//                System.out.println("Принято:");
+//                System.out.println(command.getCommand());
+//                System.out.println(command.getString());
+//                sender.send(processing(command), reader.getInput());
+//                Thread.sleep(3000);
+//            } catch (IOException | InterruptedException e) {
+//                System.out.println("Ошибка сериализации");
+//            }
+//        }
+//    }
     public void start() throws SocketException {
         System.out.println("Инициализация сервера.");
         socket = new DatagramSocket(port);
         sender = new Sender(socket);
-        reader = new Reader();
+    //    reader = new Reader();
         System.out.println("Загрузка коллекции.");
         loadCollectionCommand.activate(new Command(CommandList.LOAD));
         System.out.println("Запуск прошёл успешно, Потр: " + port);

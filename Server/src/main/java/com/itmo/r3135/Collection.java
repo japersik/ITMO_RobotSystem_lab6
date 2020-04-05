@@ -20,6 +20,7 @@ public class Collection {
         dateSave = new Date();
     }
 
+
     public Collection(File jsonFile) {
         this.jsonFile = jsonFile;
     }
@@ -63,5 +64,19 @@ public class Collection {
 
     public void updateDateSave() {
         this.dateSave = new Date();
+    }
+
+    public void setProducts(HashSet<Product> products) {
+        this.products = products;
+    }
+
+    @Override
+    public String toString() {
+        return "Collection{" +
+                ", products=" + products +
+                ", Дата инициализации:" + dateInitialization +
+                ", Дата последнего сохранения:" + dateSave +
+                ", Дата последнего изменения:" + dateChange +
+                '}';
     }
 }

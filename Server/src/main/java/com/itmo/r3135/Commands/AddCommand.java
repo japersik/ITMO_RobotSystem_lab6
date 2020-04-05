@@ -23,6 +23,7 @@ public class AddCommand extends AbstractCommand {
         HashSet<Product> products = this.collection.getProducts();
         try {
             Product addProduct = command.getProduct();
+
             addProduct.setCreationDate(java.time.LocalDateTime.now());
             addProduct.setId(uniqueoIdGeneration(products));
             if (addProduct.checkNull()) {
