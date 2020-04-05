@@ -3,6 +3,7 @@ package com.itmo.r3135;
 import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.CommandList;
 import com.itmo.r3135.System.ServerMessage;
+import com.itmo.r3135.System.Tools.StringCommandManager;
 import com.itmo.r3135.World.Product;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class ClientWorker {
                 } else {
                     commandString = commandReader.nextLine();
                     Command command = stringCommandManager.getCommandFromString(commandString);
-                    if (command != null)
+                    if (command != null) {
                         if (this.connectionCheck()) {
                             manager.send(command);
                             ServerMessage message = manager.recive();
@@ -48,6 +49,9 @@ public class ClientWorker {
                                     for (Product p : message.getProducts()) System.out.println(p);
                             } else System.out.println("Ответ cервера некорректен");
                         } else System.out.println("Подключение потеряно.");
+                    } else {
+                        System.out.println("Команда не была отправлена.");
+                    }
                 }
                 System.out.print("//: ");
             }

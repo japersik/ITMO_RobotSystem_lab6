@@ -26,7 +26,7 @@ public class ShowCommand extends AbstractCommand {
     public ServerMessage activate(Command command) {
         ArrayList<Product> products = new ArrayList<>(collection.getProducts());
         //Надо добавить сортировку
-        products.sort(Comparator.comparingInt(o -> o.getName().hashCode()));
+        products.sort(Comparator.comparingInt(o -> o.getName().length()));
         if (products.size() != 0) {
             for (Product product : products) System.out.println(product);
             return new ServerMessage("Список коллекции: ", products);

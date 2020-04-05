@@ -26,6 +26,7 @@ public class AddCommand extends AbstractCommand {
 
         try {
             Product addProduct = command.getProduct();
+
             addProduct.setCreationDate(java.time.LocalDateTime.now());
             addProduct.setId(uniqueoIdGeneration(products));
             if (addProduct.checkNull()) {

@@ -9,6 +9,7 @@ import com.itmo.r3135.System.ServerMessage;
 import com.itmo.r3135.World.Product;
 
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * Класс обработки комадны remove_greater
@@ -27,10 +28,8 @@ public class RemoveGreaterCommand extends AbstractCommand {
         try {
             int startSize = products.size();
             if (startSize != 0) {
-                Product maxProduct = command.getProduct();
-                products.removeIf(p -> (p != null && p.compareTo(maxProduct) > 0));
+                products.removeAll((products.stream().filter(product -> 0 > product.compareTo(command.getProduct()))).collect(Collectors.toCollection(HashSet::new)));
                 return new ServerMessage("Удалено " + (startSize - products.size()) + " элементов");
-
             } else return new ServerMessage("Коллекция пуста.");
         } catch (JsonSyntaxException ex) {
             return new ServerMessage("Возникла ошибка синтаксиса Json.");
