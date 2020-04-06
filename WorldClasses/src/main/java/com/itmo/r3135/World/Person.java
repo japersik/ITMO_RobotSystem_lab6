@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
- * Класс com.itmo.com.itmo.r3135.World.Person.
+ * Класс com.itmo.r3135.World.Person.
  */
 public class Person implements Serializable {
     private String name; //Поле не может быть null, Строка не может быть пустой

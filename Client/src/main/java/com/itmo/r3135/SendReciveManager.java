@@ -38,11 +38,13 @@ public class SendReciveManager {
         byte[] b = new byte[10000];
         ByteBuffer buffer = ByteBuffer.wrap(b);
         SocketAddress from = null;
-        for (int i = 0; i < 10; i++) {
+        Thread.sleep(5);
+        //попытки запросов кривоваты, надо переделать
+        for (int i = 1; i <= 100; i++) {
             from = datagramChannel.receive(buffer);
             if (from != null) break;
-            System.out.println("Попытка считать ответ" + i);
-            Thread.sleep(1000);
+            // System.out.println("Попытка считать ответ № " + i);
+            Thread.sleep(10);
         }
         buffer.flip();
 
