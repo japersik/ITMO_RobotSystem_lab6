@@ -23,10 +23,11 @@ public class SendReciveManager {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(message);
             byte[] bytearray = byteArrayOutputStream.toByteArray();
-            objectOutputStream.close();
+
             ByteBuffer buffer = ByteBuffer.wrap(bytearray);
             datagramChannel.send(buffer, socketAddress);
-            buffer.clear();
+          //  buffer.clear();
+            objectOutputStream.close();
             System.out.println("Сообщение отправлено");
         } catch (IOException e) {
             System.out.println("IOException во время отправки");
@@ -46,7 +47,7 @@ public class SendReciveManager {
             // System.out.println("Попытка считать ответ № " + i);
             Thread.sleep(10);
         }
-        buffer.flip();
+       // buffer.flip();
 
         System.out.println("Принято:");
         if (from != null) {
