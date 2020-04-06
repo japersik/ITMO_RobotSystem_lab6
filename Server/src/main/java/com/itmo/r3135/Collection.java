@@ -72,11 +72,10 @@ public class Collection {
 
     @Override
     public String toString() {
-        return "Collection{" +
-                ", products=" + products +
-                ", Дата инициализации:" + dateInitialization +
-                ", Дата последнего сохранения:" + dateSave +
-                ", Дата последнего изменения:" + dateChange +
-                '}';
+        return "Информация о коллекции:" +
+                "\n------------------------" +
+                "\n Дата инициализации:" + dateInitialization +
+                "\n Дата последнего сохранения:" + dateSave +
+                "\n Дата последнего изменения:" + dateChange;
     }
 }

@@ -36,10 +36,9 @@ public class ServerWorker implements Mediator {
     private AbstractCommand removeLowerCommand;
     private AbstractCommand removeGreaterCommand;
     private AbstractCommand executeScriptCommand;
-
+    private AbstractCommand infoCommand;
     private AbstractCommand saveCommand;
     private AbstractCommand exitCommand;
-    private boolean workingReady;
     private static final Semaphore SEMAPHORE = new Semaphore(1, true);
 
     {
@@ -59,6 +58,7 @@ public class ServerWorker implements Mediator {
         removeLowerCommand = new RemoveLowerCommand(collection, this);
         removeGreaterCommand = new RemoveGreaterCommand(collection, this);
         executeScriptCommand = new ExecuteScriptCommand(collection, this);
+        infoCommand = new InfoCommand(collection, this);
         saveCommand = new SaveCommand(collection, this);
         exitCommand = new ExitCommand(collection, this);
     }
@@ -83,14 +83,6 @@ public class ServerWorker implements Mediator {
         } else {
             System.out.println("Файл " + jsonPath.toString() + " успещно обнаружен.");
         }
-        if (!(fileName.lastIndexOf(".json") == fileName.length() - 5)) {
-            System.out.println("Заданный файл не в формате .json");
-            System.exit(1);
-        }
-
-
-    }
-
 //    public void startWork() throws SocketException {
 //        System.out.println("Инициализация сервера.");
 //        socket = new DatagramSocket(port);
@@ -121,8 +113,13 @@ public class ServerWorker implements Mediator {
 //
 //    }
 
-    public void startWork() throws SocketException {
+        if (!(fileName.lastIndexOf(".json") == fileName.length() - 5)) {
+            System.out.println("Заданный файл не в формате .json");
+            System.exit(1);
+        }
+    }
 
+    public void startWork() throws SocketException {
         System.out.println("Инициализация сервера.");
         socket = new DatagramSocket(port);
         sender = new Sender(socket);
@@ -130,14 +127,12 @@ public class ServerWorker implements Mediator {
         System.out.println("Загрузка коллекции.");
         loadCollectionCommand.activate(new Command(CommandList.LOAD));
         System.out.println("Запуск прошёл успешно, Потр: " + port);
-        workingReady = true;
         Thread keyBoard = new Thread(() -> keyBoardWork());
         Thread datagramm = new Thread(() -> datagrammWork());
         keyBoard.setDaemon(false);
         datagramm.setDaemon(true);
         keyBoard.start();
         datagramm.start();
-
     }
 
     public void keyBoardWork() {
@@ -175,9 +170,8 @@ public class ServerWorker implements Mediator {
                 System.out.println(command.getCommand());
                 System.out.println(command.getString());
                 sender.send(processing(command), reader.getInput());
-                Thread.sleep(3000);
+//                Thread.sleep(3000); Для отладки
                 SEMAPHORE.release();
-
             } catch (IOException | InterruptedException e) {
                 System.out.println("Ошибка сериализации");
             }
@@ -195,8 +189,7 @@ public class ServerWorker implements Mediator {
                     case HELP:
                         return helpCommand.activate(command);
                     case INFO:
-                        //    info();
-                        break;
+                        return infoCommand.activate(command);
                     case SHOW:
                         return showCommand.activate(command);
                     case ADD:
@@ -247,6 +240,6 @@ public class ServerWorker implements Mediator {
         } catch (ArrayIndexOutOfBoundsException ex) {
             System.out.println("Отсутствует аргумент.");
         }
-        return null;
+        return new ServerMessage("Битая команда");
     }
 }
