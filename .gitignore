@@ -1,0 +1,7 @@
+
+# Default ignored files
+/workspace.xml
+.idea
+Client/Client.iml
+Server/Server.iml
+WorldClasses/WorldClasses.iml

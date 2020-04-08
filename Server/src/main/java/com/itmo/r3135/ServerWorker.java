@@ -172,6 +172,7 @@ public class ServerWorker implements Mediator {
     public ServerMessage processing(Command command) {
 
         try {
+
             switch (command.getCommand()) {
                 case CHECK:
                     return new ServerMessage("Good connect. Hallo from server!");
@@ -209,6 +210,7 @@ public class ServerWorker implements Mediator {
                     return exitCommand.activate(command);
                 default:
                     System.out.println("Неопознанная команда.");
+
             }
         } catch (NumberFormatException ex) {
             System.out.println("Где-то проблема с форматом записи числа.Команда не выполнена");
