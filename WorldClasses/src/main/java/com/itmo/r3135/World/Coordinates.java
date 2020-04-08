@@ -58,6 +58,6 @@ public class Coordinates implements Serializable {
 
     @Override
     public String toString() {
-        return "X: " + String.format( "%g",x) + ", Y: " + String.format( "%g",y);
+        return "X: " + x + ", Y: " + y;
     }
 }

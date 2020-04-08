@@ -6,6 +6,8 @@ import com.itmo.r3135.Mediator;
 import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.ServerMessage;
 import com.itmo.r3135.World.Product;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,6 +18,8 @@ import java.util.HashSet;
  * Класс обработки комадны save
  */
 public class SaveCommand extends AbstractCommand {
+    static final Logger logger = LogManager.getLogger("Saver");
+
     public SaveCommand(Collection collection, Mediator serverWorker) {
         super(collection, serverWorker);
     }
@@ -25,29 +29,35 @@ public class SaveCommand extends AbstractCommand {
      */
     @Override
     public ServerMessage activate(Command command) {
+
         HashSet<Product> products = collection.getProducts();
         File jsonFile = collection.getJsonFile();
         Gson gson = new Gson();
         try {
             if (!jsonFile.exists()) {
-                System.out.println(("Невозможно сохранить файл. Файл по указанному пути (" + jsonFile.getAbsolutePath() + ") не существует."));
+                logger.error("Unable to save file. The file at the specified path (" + jsonFile.getAbsolutePath() + ") does not exist.");
+//                System.out.println(("Невозможно сохранить файл. Файл по указанному пути (" + jsonFile.getAbsolutePath() + ") не существует."));
             } else if (!jsonFile.canRead() || !jsonFile.canWrite()) {
-                System.out.println("Невозможно сохранить файл. Файл защищён от чтения и(или) записи.");
+                logger.error("Unable to save file. The file is protected from reading and (or) writing.");
+//                System.out.println("Невозможно сохранить файл. Файл защищён от чтения и(или) записи.");
             } else {
                 FileWriter fileWriter = new FileWriter(jsonFile);
                 try {
                     fileWriter.write(gson.toJson(products));
                     fileWriter.flush();
-                    System.out.println("Файл успешно сохранён.");
+                    logger.info("File saved.");
+//                    System.out.println("Файл успешно сохранён.");
                 } catch (Exception ex) {
-                    System.out.println("При записи файла что-то пошло не так.");
+                    logger.error("File save error.");
+//                    System.out.println("При записи файла что-то пошло не так.");
                 } finally {
                     fileWriter.close();
                 }
             }
             collection.updateDateSave();
         } catch (IOException e) {
-            System.out.println("Возникла ошибка работы с файлом");
+            logger.error("Error working with the file");
+//            System.out.println("Возникла ошибка работы с файлом");
         }
         return null;
     }

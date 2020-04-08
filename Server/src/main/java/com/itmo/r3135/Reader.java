@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-//Модуль чтения запроса
 public class Reader {
     DatagramSocket socket;
     private byte[] b = new byte[10000];

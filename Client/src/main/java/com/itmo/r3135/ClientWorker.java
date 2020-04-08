@@ -67,7 +67,7 @@ public class ClientWorker {
         ServerMessage recive = manager.recive();
         if (recive != null) {
             System.out.println(recive.getMessage());
-            if (recive.getMessage().equals("Good connect. Hello from server!")) {
+            if (recive.getMessage().equals("Good connect. Hallo from server!")) {
                 return true;
             } else return false;
         } else return false;

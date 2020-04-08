@@ -20,7 +20,8 @@ public class ServerMain {
         Scanner input = new Scanner(System.in);
         logger.info("The port reader started.");
         while (true) {
-            System.out.println("Для начала работы сервера введите порт или 'exit' для завершенеия программы.");
+            logger.info("To start the server, enter the port or 'exit' to exit the program.");
+//            System.out.println("Для начала работы сервера введите порт или 'exit' для завершенеия программы.");
             System.out.print("//: ");
             if (!input.hasNextLine()) {
                 break;
@@ -35,7 +36,8 @@ public class ServerMain {
                     int port = Integer.valueOf(inputString);
                     if (port < 0 || port > 65535) {
                         logger.error("Wrong port!");
-                        System.out.println("Порт - число от 0 до 65535.");
+                        logger.error("Port is a number from 0 to 65535");
+//                        System.out.println("Порт - число от 0 до 65535.");
                     } else {
                         ServerWorker worker = new ServerWorker(port, FILENAME);
                         worker.startWork();
@@ -43,14 +45,15 @@ public class ServerMain {
                     }
                 } catch (NumberFormatException e) {
                     logger.error("Invalid number format in '" + inputString + "' !");
-                    System.out.println("Ошибка в записи номера порта.");
+//                    System.out.println("Ошибка в записи номера порта.");
                 } catch (BindException e) {
-                    logger.error("The port is busy");
-                    System.out.println("Этот порт уже занят.");
+                    logger.error("The port " + inputString + " is busy.");
+//                    System.out.println("Этот порт уже занят.");
                 }
             }
         }
-     //   logger.info("The program has completed.");
-     //   System.out.println("Работа сервера заверщена.");
+        //   logger.info("The program has completed.");
+        //   System.out.println("Работа сервера заверщена.");
     }
 }
+
