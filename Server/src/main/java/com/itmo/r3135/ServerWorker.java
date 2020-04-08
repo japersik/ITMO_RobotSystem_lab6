@@ -185,7 +185,7 @@ public class ServerWorker implements Mediator {
                 switch (command.getCommand()) {
                     case CHECK:
                         System.out.println("Попытка соединиться");
-                        return new ServerMessage("Good connect. Hallo from server!");
+                        return new ServerMessage("Good connect. Hello from server!");
                     case HELP:
                         return helpCommand.activate(command);
                     case INFO:
