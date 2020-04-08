@@ -81,7 +81,14 @@ public class ServerWorker implements Mediator {
         } else {
 //            System.out.println("Указанного пути не существует.");
             logger.warn("Path " + fileName + " does not exist.");
-            System.exit(1);
+            try {
+                logger.info("Create a new file.");
+                jsonPath.createNewFile();
+                collection.setJsonFile(jsonPath);
+            } catch (IOException e) {
+                logger.fatal("Error creating file!!!");
+                System.exit(666);
+            }
         }
         if (!jsonPath.isFile()) {
 //            System.out.println("Путь " + jsonPath.toString() + " не содержит имени файла");
@@ -100,15 +107,16 @@ public class ServerWorker implements Mediator {
     }
 
     public void startWork() throws SocketException {
-        System.out.println("Инициализация сервера.");
+//        System.out.println("Инициализация сервера.");
         logger.info("Server initialization.");
         socket = new DatagramSocket(port);
         sender = new Sender(socket);
         reader = new Reader(socket);
-        System.out.println("Загрузка коллекции.");
+//        System.out.println("Загрузка коллекции.");
+        logger.info("Load collection.");
         loadCollectionCommand.activate(new Command(CommandList.LOAD));
-        System.out.println("Запуск прошёл успешно, Потр: " + port);
-        logger.info("Server started.");
+//        System.out.println("Запуск прошёл успешно, Потр: " + port);
+        logger.info("Server started on port " + port + ".");
         Thread keyBoard = new Thread(() -> keyBoardWork());
         Thread datagramm = new Thread(() -> datagrammWork());
         keyBoard.setDaemon(false);
@@ -136,7 +144,9 @@ public class ServerWorker implements Mediator {
                             processing(new Command(CommandList.SAVE));
                             break;
                         default:
-                            System.out.println("Доступные команды сервера: save, exit.");
+                            logger.error("Bad command.");
+                            logger.info("Available commands:'save','exit'.");
+//                            System.out.println("Доступные команды сервера: save, exit.");
                     }
                     SEMAPHORE.release();
                 } else processing(new Command(CommandList.EXIT));
@@ -151,10 +161,9 @@ public class ServerWorker implements Mediator {
             try {
                 Command command = reader.nextCommand();
                 SEMAPHORE.acquire();
-                System.out.println("Принято:");
-                logger.info("Command " + command.getCommand() + " from " + reader.getInput().getSocketAddress() + ".");
-                System.out.println(command.getCommand());
-                System.out.println(command.getString());
+                logger.info("New command " + command.getCommand() + " from " + reader.getInput().getSocketAddress() + ".");
+//                System.out.println(command.getCommand());
+//                System.out.println(command.getString());
                 ServerMessage message = processing(command);
                 logger.info("Command complete.");
                 logger.info("Sending server message.");
@@ -162,8 +171,7 @@ public class ServerWorker implements Mediator {
 //                Thread.sleep(3000);// Для отладки
                 SEMAPHORE.release();
             } catch (IOException | InterruptedException e) {
-                System.out.println("Ошибка сериализации");
-                logger.error("Error in receive-send command!!!");
+                logger.error("Error in receive-send of command!!!");
             }
         }
     }
@@ -208,13 +216,12 @@ public class ServerWorker implements Mediator {
                 case EXIT:
                     return exitCommand.activate(command);
                 default:
-                    System.out.println("Неопознанная команда.");
+                    logger.warn("Bad command!");
             }
         } catch (NumberFormatException ex) {
-            System.out.println("Где-то проблема с форматом записи числа.Команда не выполнена");
             logger.error("Bad number in command!!!");
         }
-        logger.warn("Bad command!");
+
         return new ServerMessage("Битая команда");
     }
 }

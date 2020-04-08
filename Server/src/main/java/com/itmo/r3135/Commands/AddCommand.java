@@ -18,8 +18,6 @@ public class AddCommand extends AbstractCommand {
         super(collection, serverWorker);
     }
 
-
-
     @Override
     public ServerMessage activate(Command command) {
         HashSet<Product> products = this.collection.getProducts();

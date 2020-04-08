@@ -24,7 +24,7 @@ public class ExecuteScriptCommand extends AbstractCommand {
     public ServerMessage activate(Command command) {
         HashSet<Product> oldProducts = new HashSet<Product>(collection.getProducts());
         try {
-            System.out.println("Начинается анализ скрипта. Это может занять некоторое время");
+//            System.out.println("Начинается анализ скрипта. Это может занять некоторое время");
             for (Command executeCommand : command.getEcexuteCommands())
                 serverWorker.processing(executeCommand);
             collection.getDateChange();

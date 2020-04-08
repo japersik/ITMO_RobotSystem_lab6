@@ -28,7 +28,7 @@ public class ShowCommand extends AbstractCommand {
         //Надо добавить сортировку
         products.sort(Comparator.comparingInt(o -> o.getName().length()));
         if (products.size() != 0) {
-            for (Product product : products) System.out.println(product);
+//            for (Product product : products) System.out.println(product);
             return new ServerMessage("Список коллекции: ", products);
         } else return new ServerMessage("Коллекция пуста.");
 

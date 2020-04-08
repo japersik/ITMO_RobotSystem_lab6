@@ -20,10 +20,10 @@ public class Sender {
         byte[] message = toSerial(serverMessage);
         InetAddress addres = inputPacket.getAddress();
         int outPort = inputPacket.getPort();
-        System.out.println("Отправка");
+//        System.out.println("Отправка");
         DatagramPacket output = new DatagramPacket(message, message.length, addres, outPort);
         socket.send(output);
-        System.out.println("Опправлено.");
+//        System.out.println("Опправлено.");
     }
 
     private byte[] toSerial(ServerMessage serverMessage) throws IOException {
