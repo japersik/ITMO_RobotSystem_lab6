@@ -27,15 +27,18 @@ public class GroupCountingByCoordinatesCommand extends AbstractCommand {
         HashSet<Product> products = collection.getProducts();
         if (!products.isEmpty()) {
             final String[] s = {new String()};
+            s[0] = s[0] + String.format("%20s%n", "Первая четверть");
             products.stream().filter(product -> product.getCoordinates().getX() >= 0 & product.getCoordinates().getY() >= 0)
-                    .forEach(product ->  s[0] = s[0] + String.format("%-10s%20s%10s%n", product.getName(),product.getId(),product.getCoordinates().toString()));
+                    .forEach(product ->  s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(),product.getId(),product.getCoordinates().toString()));
+            s[0] = s[0] + String.format("%20s%n", "Вторая четверть");
             products.stream().filter(product -> product.getCoordinates().getX() < 0 & product.getCoordinates().getY() >= 0)
-                    .forEach(product ->  s[0] = s[0] + String.format("%-10s%20s%10s%n", product.getName(),product.getId(),product.getCoordinates().toString()));
+                    .forEach(product ->  s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(),product.getId(),product.getCoordinates().toString()));
+            s[0] = s[0] + String.format("%20s%n", "Третья четверть");
             products.stream().filter(product -> product.getCoordinates().getX() < 0 & product.getCoordinates().getY() < 0)
-                    .forEach(product ->  s[0] = s[0] + String.format("%-10s%20s%10s%n", product.getName(),product.getId(),product.getCoordinates().toString()));
+                    .forEach(product ->  s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(),product.getId(),product.getCoordinates().toString()));
+            s[0] = s[0] + String.format("%20s%n", "Четвер четверть");
             products.stream().filter(product -> product.getCoordinates().getX() >= 0 & product.getCoordinates().getY() < 0)
-                    .forEach(product ->  s[0] = s[0] + String.format("%-10s%20s%10s%n", product.getName(),product.getId(),product.getCoordinates().toString()));
-
+                    .forEach(product ->  s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(),product.getId(),product.getCoordinates().toString()));
             return new ServerMessage(s[0]);
 
         } else System.out.println("Коллекция пуста.");
