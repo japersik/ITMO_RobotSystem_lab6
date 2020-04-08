@@ -12,7 +12,6 @@ import java.net.SocketAddress;
 import java.nio.channels.DatagramChannel;
 import java.util.Date;
 import java.util.Random;
-import java.util.Scanner;
 
 public class SpamerWorker {
     private SendReciveManager manager;
@@ -104,11 +103,13 @@ public class SpamerWorker {
             System.out.println(recive.getMessage());
             Date resiveDate = new Date();
             System.out.println("Время ответа: " + (resiveDate.getTime() - sendDate.getTime()) + " ms.");
-            if (recive.getMessage().equals("Good connect. Hallo from server!")) {
+            if (recive.getMessage().equals("Good connect. Hello from server!")) {
                 return true;
-            } else return false;
+            } else {
+                System.out.println("Неверное подтверждение от сервера!");
+                return false;
+            }
         } else return false;
     }
-
 
 }

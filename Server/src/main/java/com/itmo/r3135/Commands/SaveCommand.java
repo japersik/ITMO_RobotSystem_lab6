@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.itmo.r3135.Collection;
 import com.itmo.r3135.Mediator;
 import com.itmo.r3135.System.Command;
+import com.itmo.r3135.System.CommandList;
 import com.itmo.r3135.System.ServerMessage;
 import com.itmo.r3135.World.Product;
 import org.apache.logging.log4j.LogManager;
@@ -35,8 +36,17 @@ public class SaveCommand extends AbstractCommand {
         Gson gson = new Gson();
         try {
             if (!jsonFile.exists()) {
-                logger.error("Unable to save file. The file at the specified path (" + jsonFile.getAbsolutePath() + ") does not exist.");
+                logger.warn("Unable to save file. The file at the specified path (" + jsonFile.getAbsolutePath() + ") does not exist.");
 //                System.out.println(("Невозможно сохранить файл. Файл по указанному пути (" + jsonFile.getAbsolutePath() + ") не существует."));
+                try {
+                    logger.info("Create a new file.");
+                    jsonFile.createNewFile();
+                    collection.setJsonFile(jsonFile);
+                    this.activate(new Command(CommandList.SAVE));
+                } catch (IOException e) {
+                    logger.fatal("Error creating file!!! Not saved!!!");
+
+                }
             } else if (!jsonFile.canRead() || !jsonFile.canWrite()) {
                 logger.error("Unable to save file. The file is protected from reading and (or) writing.");
 //                System.out.println("Невозможно сохранить файл. Файл защищён от чтения и(или) записи.");

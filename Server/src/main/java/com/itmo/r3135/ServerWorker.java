@@ -182,7 +182,7 @@ public class ServerWorker implements Mediator {
         try {
             switch (command.getCommand()) {
                 case CHECK:
-                    return new ServerMessage("Good connect. Hallo from server!");
+                    return new ServerMessage("Good connect. Hello from server!");
                 case HELP:
                     return helpCommand.activate(command);
                 case INFO:

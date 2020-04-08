@@ -77,10 +77,11 @@ public class LoadCollectionCommand extends AbstractCommand {
 //                System.out.println("Чувак, у тебя битый json, делай новый");
                 System.exit(666);
             }
-            System.out.println("Коллекций успешно загружена. Добавлено " + (products.size() - startSize) + " элементов.");
+            logger.info("Collections successfully uploaded. Added " + (products.size () - startSize) + " items.");
+//            System.out.println("Коллекций успешно загружена. Добавлено " + (products.size() - startSize) + " элементов.");
         } catch (IOException e) {
-            logger.error("Unable to save file. The file at the specified path (" + jsonFile.getAbsolutePath() + ") does not exist.");
-            System.out.println("При чтении строк возникла ошибка");
+            logger.error("Reading line error");
+//            System.out.println("При чтении строк возникла ошибка");
         }
         return null;
     }
