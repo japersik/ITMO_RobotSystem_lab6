@@ -1,3 +1,4 @@
+
 package com.itmo.r3135.Commands;
 
 import com.itmo.r3135.Collection;
@@ -24,32 +25,22 @@ public class GroupCountingByCoordinatesCommand extends AbstractCommand {
     public ServerMessage activate(Command command) {
         HashSet<Product> products = collection.getProducts();
         if (!products.isEmpty()) {
-            for (int i = 1; i <= 4; i++) {
-                System.out.println("Элементы " + i + " координатной четверти:");
-                for (Product p : products) {
-                    float x = p.getCoordinates().getX();
-                    double y = p.getCoordinates().getY();
-                    switch (i) {
-                        case 1:
-                            if (x >= 0 & y >= 0)
-                                System.out.println(p);
-                            break;
-                        case 2:
-                            if (x < 0 & y >= 0)
-                                System.out.println(p);
-                            break;
-                        case 3:
-                            if (x < 0 & y < 0)
-                                System.out.println(p);
-                            break;
-                        case 4:
-                            if (x >= 0 & y < 0)
-                                System.out.println(p);
-                            break;
-                    }
-                }
-            }
-        } else System.out.println("Коллекция пуста.");
-        return null;
+            final String[] s = {new String()};
+            s[0] = s[0] + String.format("%20s%n", "Первая четверть");
+            products.stream().filter(product -> product.getCoordinates().getX() >= 0 & product.getCoordinates().getY() >= 0)
+                    .forEach(product -> s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(), product.getId(), product.getCoordinates().toString()));
+            s[0] = s[0] + String.format("%20s%n", "Вторая четверть");
+            products.stream().filter(product -> product.getCoordinates().getX() < 0 & product.getCoordinates().getY() >= 0)
+                    .forEach(product -> s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(), product.getId(), product.getCoordinates().toString()));
+            s[0] = s[0] + String.format("%20s%n", "Третья четверть");
+            products.stream().filter(product -> product.getCoordinates().getX() < 0 & product.getCoordinates().getY() < 0)
+                    .forEach(product -> s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(), product.getId(), product.getCoordinates().toString()));
+            s[0] = s[0] + String.format("%20s%n", "Четвер четверть");
+            products.stream().filter(product -> product.getCoordinates().getX() >= 0 & product.getCoordinates().getY() < 0)
+                    .forEach(product -> s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(), product.getId(), product.getCoordinates().toString()));
+            return new ServerMessage(s[0]);
+
+        } else return new ServerMessage("Коллекция пуста.");
     }
 }
+
