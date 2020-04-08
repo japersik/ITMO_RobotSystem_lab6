@@ -23,12 +23,11 @@ public class SendReciveManager {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(message);
             byte[] bytearray = byteArrayOutputStream.toByteArray();
-
             ByteBuffer buffer = ByteBuffer.wrap(bytearray);
             datagramChannel.send(buffer, socketAddress);
-          //  buffer.clear();
+            //  buffer.clear();
             objectOutputStream.close();
-            System.out.println("Сообщение отправлено");
+            System.out.println("Сообщение " + message.getCommand() + " отправлено");
         } catch (IOException e) {
             System.out.println("IOException во время отправки");
             System.out.println(e);
@@ -40,20 +39,19 @@ public class SendReciveManager {
         ByteBuffer buffer = ByteBuffer.wrap(b);
         SocketAddress from = null;
         Thread.sleep(5);
-        //попытки запросов кривоваты, надо переделать
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 0; i < 1000; i++) {
+            if (i % 200 == 0) System.out.println("Попытка считать ответ № " + (i / 200 + 1));
             from = datagramChannel.receive(buffer);
             if (from != null) break;
-            // System.out.println("Попытка считать ответ № " + i);
             Thread.sleep(10);
         }
-       // buffer.flip();
+//        buffer.flip();
 
-        System.out.println("Принято:");
         if (from != null) {
+            System.out.println("Ответ принят.");
             return fromSerial(b);
         }
-        buffer.clear();
+//            buffer.clear();
         System.out.println("Ответ не был получен!");
         return null;
     }

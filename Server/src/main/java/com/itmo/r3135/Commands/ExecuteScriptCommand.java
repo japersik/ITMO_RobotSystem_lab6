@@ -27,6 +27,7 @@ public class ExecuteScriptCommand extends AbstractCommand {
             System.out.println("Начинается анализ скрипта. Это может занять некоторое время");
             for (Command executeCommand : command.getEcexuteCommands())
                 serverWorker.processing(executeCommand);
+            collection.getDateChange();
             return new ServerMessage("Скрикт был выполнен.");
         } catch (Exception e) {
             collection.setProducts(oldProducts);

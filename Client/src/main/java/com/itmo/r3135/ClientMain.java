@@ -19,7 +19,7 @@ public class ClientMain {
 
         Scanner input = new Scanner(System.in);
         while (true) {
-            System.out.println("Внимание! В тестовых целях сервер может обрабатывает 1 сообщение в 3 секунды!!!");
+       //     System.out.println("Внимание! В тестовых целях сервер может обрабатывает 1 сообщение в 3 секунды!!!");
             System.out.println("Для начала работы с коллекцией ведите адрес сервера в формате \"адрес:порт\" или 'exit' для завершенеия программы.");
             System.out.print("//: ");
             if (!input.hasNextLine()) {

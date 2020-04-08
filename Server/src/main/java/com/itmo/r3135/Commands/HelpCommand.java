@@ -30,8 +30,9 @@ public class HelpCommand extends AbstractCommand {
                         String.format("%-30s%5s%n", "filter_contains_name name", "Вывести элементы, значение поля name которых содержит заданную подстроку") +
                         String.format("%-30s%5s%n", "print_field_descending_price", "Вывести значения поля price в порядке убывания") +
                         String.format("%-30s%5s%n", "clear", "Очистить коллекцию") +
-                        String.format("%-30s%5s%n", "save", "Сохранить коллекцию в файл") +
-                        String.format("%-30s%5s%n", "exit", "Завершить программу (без сохранения в файл)");
+                       // String.format("%-30s%5s%n", "save", "Сохранить коллекцию в файл") +
+                       // String.format("%-30s%5s%n", "exit", "Завершить программу (без сохранения в файл)")+
+                                ("");
         return new ServerMessage(s);
     }
 }

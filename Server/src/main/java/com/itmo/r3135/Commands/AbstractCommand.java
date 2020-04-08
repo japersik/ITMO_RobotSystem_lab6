@@ -15,5 +15,4 @@ public abstract class AbstractCommand {
     }
 
     public abstract ServerMessage activate(Command command);
-//    }
 }

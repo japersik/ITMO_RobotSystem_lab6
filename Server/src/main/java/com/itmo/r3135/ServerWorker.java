@@ -2,9 +2,7 @@ package com.itmo.r3135;
 
 import com.google.gson.Gson;
 import com.itmo.r3135.Commands.*;
-import com.itmo.r3135.System.Command;
-import com.itmo.r3135.System.CommandList;
-import com.itmo.r3135.System.ServerMessage;
+import com.itmo.r3135.System.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +13,7 @@ import java.util.concurrent.Semaphore;
 
 
 public class ServerWorker implements Mediator {
+    private static final Semaphore SEMAPHORE = new Semaphore(1, true);
     private int port;
     private DatagramSocket socket;
     private Gson gson;
@@ -39,7 +38,6 @@ public class ServerWorker implements Mediator {
     private AbstractCommand infoCommand;
     private AbstractCommand saveCommand;
     private AbstractCommand exitCommand;
-    private static final Semaphore SEMAPHORE = new Semaphore(1, true);
 
     {
         gson = new Gson();
@@ -83,36 +81,6 @@ public class ServerWorker implements Mediator {
         } else {
             System.out.println("Файл " + jsonPath.toString() + " успещно обнаружен.");
         }
-//    public void startWork() throws SocketException {
-//        System.out.println("Инициализация сервера.");
-//        socket = new DatagramSocket(port);
-//        sender = new Sender(socket);
-//        reader = new Reader(socket);
-//        System.out.println("Загрузка коллекции.");
-//        loadCollectionCommand.activate(new Command(CommandList.LOAD));
-//        System.out.println("Запуск прошёл успешно, Потр: " + port);
-//        Thread lal = new Thread(this);
-//        lal.setDaemon(true);
-//        lal.start();
-//        Scanner input = new Scanner(System.in);
-//        while (true) {
-////            try {
-////            if (input.hasNextLine())
-//                System.out.println(input.nextLine());
-//            else break;
-//                Command command = reader.nextCommand();
-//                System.out.println("Принято:");
-//                System.out.println(command.getCommand());
-//                System.out.println(command.getString());
-//                sender.send(processing(command), reader.getInput());
-//                Thread.sleep(3000);
-//            } catch (IOException | InterruptedException e) {
-//                System.out.println("Ошибка сериализации");
-//        }
-//        }
-//
-//    }
-
         if (!(fileName.lastIndexOf(".json") == fileName.length() - 5)) {
             System.out.println("Заданный файл не в формате .json");
             System.exit(1);
@@ -137,6 +105,7 @@ public class ServerWorker implements Mediator {
 
     public void keyBoardWork() {
         try (Scanner input = new Scanner(System.in);) {
+            input.delimiter();
             while (true) {
                 System.out.println("//:");
                 if (input.hasNextLine()) {
@@ -169,7 +138,7 @@ public class ServerWorker implements Mediator {
                 System.out.println("Принято:");
                 System.out.println(command.getCommand());
                 System.out.println(command.getString());
-                sender.send(processing(command), reader.getInput());
+                sender.send(processing(command),reader.getInput());
 //                Thread.sleep(3000); Для отладки
                 SEMAPHORE.release();
             } catch (IOException | InterruptedException e) {
@@ -194,33 +163,20 @@ public class ServerWorker implements Mediator {
                         return showCommand.activate(command);
                     case ADD:
                         return addCommand.activate(command);
-                    //      dateChange = new Date();
                     case UPDATE:
                         return updeteIdCommand.activate(command);
-                    //    dateChange = new Date();
                     case REMOVE_BY_ID:
                         return removeByIdCommand.activate(command);
-                    //    dateChange = new Date();
                     case CLEAR:
                         return clearCommand.activate(command);
-                    //    dateChange = new Date();
-//                    case "save":
-//                        saveCommand.activate();
-//                        break;
                     case EXECUTE_SCRIPT:
                         return executeScriptCommand.activate(command);
-//                    case "exit":
-//                        exitCommand.activate();
-//                        break;
                     case ADD_IF_MIN:
                         return addIfMinCommand.activate(command);
-                    //      dateChange = new Date();
                     case REMOVE_GREATER:
                         return removeGreaterCommand.activate(command);
-                    //     dateChange = new Date();
                     case REMOVE_LOWER:
                         return removeLowerCommand.activate(command);
-                    //      dateChange = new Date();
                     case GROUP_COUNTING_BY_COORDINATES:
                         return groupCountingByCoordinatesCommand.activate(command);
                     case FILTER_CONTAINS_NAME:
@@ -241,5 +197,6 @@ public class ServerWorker implements Mediator {
             System.out.println("Отсутствует аргумент.");
         }
         return new ServerMessage("Битая команда");
+
     }
 }

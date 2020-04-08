@@ -33,6 +33,7 @@ public class AddCommand extends AbstractCommand {
                 System.out.println("Элемент не удовлетворяет требованиям коллекции");
                 return new ServerMessage(Product.printRequest());
             } else if (products.add(addProduct)) {
+                collection.getDateChange();
                 return new ServerMessage("Элемент успешно добавлен.");
             } else return new ServerMessage("Ошибка добавления элеемнта в коллекцию");
         } catch (JsonSyntaxException ex) {

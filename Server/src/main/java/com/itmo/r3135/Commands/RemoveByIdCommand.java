@@ -6,7 +6,6 @@ import com.itmo.r3135.System.Command;
 import com.itmo.r3135.System.ServerMessage;
 import com.itmo.r3135.World.Product;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -33,6 +32,7 @@ public class RemoveByIdCommand extends AbstractCommand {
             if (startSize == products.size()) {
                 return new ServerMessage("Элемент с id " + id + " не существует.");
             }
+            collection.uptadeDateChange();
             return new ServerMessage("Элемент коллекции успешно удалён.");
         } else return new ServerMessage("Коллекция пуста.");
     }

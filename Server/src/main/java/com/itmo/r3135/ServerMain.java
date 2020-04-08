@@ -3,20 +3,6 @@ package com.itmo.r3135;
 import java.io.IOException;
 import java.net.BindException;
 import java.util.Scanner;
-//Обязанности серверного приложения:
-//Работа с файлом, хранящим коллекцию.
-//Управление коллекцией объектов.
-//Назначение автоматически генерируемых полей объектов в коллекции.
-//Ожидание подключений и запросов от клиента.
-//Обработка полученных запросов (команд).
-
-// Серверное приложение должно состоять из следующих модулей (реализованных в виде одного или нескольких классов):
-//Модуль приёма подключений. ------Worker
-//Модуль чтения запроса. ------ Ну ок, Reader
-//Модуль обработки полученных команд. ------ commands-Package
-//Модуль отправки ответов клиенту. -------sender
-//Сервер должен работать в однпоточном режиме.
-
 
 /**
  * @author daniil
@@ -57,32 +43,5 @@ public class ServerMain {
             }
             System.out.println("Работа сервера заверщена.");
         }
-
-//Так должен работать приём - передача на сервере
-/*
-        System.out.println("Инициализация сервера:");
-        DatagramSocket socket = new DatagramSocket(port);
-        System.out.println("Запуск прошёл успешно, Потр: " + port);
-        DatagramPacket input = new DatagramPacket(b, b.length);
-        while (true) {
-            System.out.println("Ожидание");
-            socket.receive(input);
-            System.out.println(input);
-            System.out.println("Принято:");
-            for (byte j : b) {
-                System.out.println(j);
-            }
-            System.out.println("Обработка (умножение на 2)");
-            for (int ki = 0; ki < 10; ki++) {
-                b[ki] *= 2;
-            }
-            InetAddress addres = input.getAddress();
-            int outPort = input.getPort();
-            System.out.println("Отправка");
-            DatagramPacket output = new DatagramPacket(b, b.length, addres, outPort);
-            socket.send(output);
-            System.out.println("Опправлено.");
-        }
-    */
     }
 }

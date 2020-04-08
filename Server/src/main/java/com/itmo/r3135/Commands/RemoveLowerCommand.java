@@ -30,6 +30,7 @@ public class RemoveLowerCommand extends AbstractCommand {
             int startSize = products.size();
             if (startSize != 0) {
                 products.removeAll((products.stream().filter(product -> 0 < product.compareTo(command.getProduct()))).collect(Collectors.toCollection(HashSet::new)));
+                collection.uptadeDateChange();
                 return new ServerMessage("Удалено " + (startSize - products.size()) + " элементов");
             } else return new ServerMessage("Коллекция пуста");
         } catch (JsonSyntaxException ex) {

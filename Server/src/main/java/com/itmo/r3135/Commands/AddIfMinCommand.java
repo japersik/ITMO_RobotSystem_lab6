@@ -32,6 +32,7 @@ public class AddIfMinCommand extends AbstractCommand {
                 Product minElem = products.stream().min(Product::compareTo).get();
                 if (addProduct.compareTo(minElem) < 0) {
                     serverWorker.processing(new Command(CommandList.ADD, addProduct));
+                    collection.getDateChange();
                 } else return new ServerMessage("Элемент не минимальный!");
             } else return new ServerMessage("Коллекция пуста, минимальный элемент отсутствует.");
         } catch (JsonSyntaxException ex) {
