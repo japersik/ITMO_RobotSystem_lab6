@@ -2,6 +2,8 @@ package com.itmo.r3135;
 
 import com.itmo.r3135.System.ServerMessage;
 import com.itmo.r3135.System.Tools.DatagramTrimer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class Sender {
+    static final Logger logger = LogManager.getLogger("Sender");
     private DatagramSocket socket;
 
     public Sender(DatagramSocket socket) {
@@ -22,23 +25,16 @@ public class Sender {
 //        for (int i = 0; i < message.length; i++) {
 //            System.out.println(message[i]);
 //        }
-        if (message.length > 65500) {
-            byte[][] outMessages = DatagramTrimer.trimByte(message);
-            for (int i = 0; i < outMessages.length; i++) {
-                byte[] packet = outMessages[i];
-                InetAddress addres = inputPacket.getAddress();
-                int outPort = inputPacket.getPort();
-                DatagramPacket output = new DatagramPacket(packet, packet.length, addres, outPort);
-                socket.send(output);
-                if (outMessages.length > 4)
-                    Thread.sleep(6);
-            }
-        } else {
-            message = DatagramTrimer.setFinal(message);
+        byte[][] outMessages = DatagramTrimer.trimByte(message);
+        logger.info("Sending " + outMessages.length + " packages.");
+        for (int i = 0; i < outMessages.length; i++) {
+            byte[] packet = outMessages[i];
             InetAddress addres = inputPacket.getAddress();
             int outPort = inputPacket.getPort();
-            DatagramPacket output = new DatagramPacket(message, message.length, addres, outPort);
+            DatagramPacket output = new DatagramPacket(packet, packet.length, addres, outPort);
             socket.send(output);
+            if (outMessages.length > 4)
+                Thread.sleep(6);
         }
     }
 

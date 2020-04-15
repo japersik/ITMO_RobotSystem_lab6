@@ -38,7 +38,7 @@ public class SendReciveManager {
 
     public ServerMessage recive() throws IOException, InterruptedException {
         ArrayList<byte[]> messageList = new ArrayList<>();
-
+        int packetCounter = 0;
         byte[] b;
         do {
             b = new byte[65535];
@@ -51,15 +51,18 @@ public class SendReciveManager {
                 if (from != null) break;
                 Thread.sleep(10);
             }
-            if (from != null) messageList.add(b);
-            else {
+            if (from != null) {
+                ++packetCounter;
+                messageList.add(b);
+            } else {
                 if (messageList.size() != 0) System.out.println("Пакеты сообщения потерялить.");
                 else {
                     System.out.println("Ответ не был получен!");
                 }
                 return null;
             }
-        } while  (!DatagramTrimer.isFinal(b));
+        } while (!DatagramTrimer.isFinal(b));
+        System.out.println("Получено пакетов " + packetCounter);
         byte[] fullMessage = new byte[0];
         for (byte[] message : messageList) {
             fullMessage = DatagramTrimer.connectByte(fullMessage, message);

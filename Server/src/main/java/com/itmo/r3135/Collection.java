@@ -72,10 +72,12 @@ public class Collection {
 
     @Override
     public String toString() {
-        return "Информация о коллекции:" +
+        return  "------------------------" +
+                "\nИнформация о коллекции:" +
                 "\n------------------------" +
-                "\n Дата инициализации:" + dateInitialization +
-                "\n Дата последнего сохранения:" + dateSave +
-                "\n Дата последнего изменения:" + dateChange;
+                "\n Количество элементов коллекции: " + products.size() +
+                "\n Дата инициализации: " + dateInitialization +
+                "\n Дата последнего сохранения: " + dateSave +
+                "\n Дата последнего изменения: " + dateChange;
     }
 }

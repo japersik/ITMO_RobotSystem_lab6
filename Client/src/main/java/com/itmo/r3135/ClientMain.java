@@ -40,7 +40,6 @@ public class ClientMain {
                     System.out.println("Ошибка в записи номера порта.");
                 } catch (IndexOutOfBoundsException | UnresolvedAddressException e) {
                     System.out.println("Адрес введён некорректно.");
-                    e.printStackTrace();
                 } catch (PortUnreachableException e) {
                     System.out.println("Похоже, сервер по этому адрусе недоступен");
                 } catch (InterruptedException e) {

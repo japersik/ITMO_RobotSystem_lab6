@@ -24,6 +24,7 @@ public class Product implements Comparable<Product>, Serializable {
     static {
         idCounter = 1;
     }
+
     {
         creationDate = LocalDateTime.now();
     }
@@ -56,6 +57,7 @@ public class Product implements Comparable<Product>, Serializable {
      */
     public boolean checkNull() {
         try {
+            if (this.creationDate == null) this.creationDate = LocalDateTime.now();
             return name == null || name.isEmpty() || coordinates == null ||
                     coordinates.getX() == null || coordinates.getX() >= 82 || coordinates.getY() <= -50 ||
                     creationDate == null || price == null || price <= 0 ||
@@ -68,6 +70,7 @@ public class Product implements Comparable<Product>, Serializable {
             return true;
         }
     }
+
 
     /**
      * Устанавливает id орпеделенному элементу коллекции.
@@ -129,7 +132,8 @@ public class Product implements Comparable<Product>, Serializable {
     }
 
     public void printCheck() {
-
+        if (this.creationDate == null) this.creationDate = LocalDateTime.now();
+        System.out.println(this);
         String s = String.format(format, "Поле", "Значение", "Требование");
         if (this == null) s += String.format(format, "Product", "null", "Ты шо, дорашка?");
         else {
