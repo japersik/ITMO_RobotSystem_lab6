@@ -27,7 +27,7 @@ public class PrintFieldDescendingPriceCommand extends AbstractCommand {
     public ServerMessage activate(Command command) {
         HashSet<Product> products = collection.getProducts();
         if (!products.isEmpty()) {
-            ArrayList<Product> list = products.stream().sorted((o1, o2) -> (int) ((o2.getPrice() - o1.getPrice()) * 100)).collect(Collectors.toCollection(ArrayList::new));
+            ArrayList<Product> list = products.stream().sorted((o1, o2) -> (int) ((o2.getPrice() - o1.getPrice()) * 100000)).collect(Collectors.toCollection(ArrayList::new));
             return new ServerMessage("Сортировка в порядке убывания цены:", list);
 
         } else return new ServerMessage("Коллекция пуста.");

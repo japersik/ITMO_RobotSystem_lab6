@@ -7,22 +7,23 @@ import java.time.LocalDateTime;
  * Класс com.itmo.com.itmo.r3135.World.Product.
  */
 public class Product implements Comparable<Product>, Serializable {
-    private int id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-    private String name; //Поле не может быть null, Строка не может быть пустой
-    private Coordinates coordinates; //Поле не может быть null
-    private LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    private Double price; //Поле может быть null, Значение поля должно быть больше 0
-    private String partNumber; //Длина строки должна быть не меньше 21, Поле не может быть null
-    private Float manufactureCost; //Поле не может быть null
-    private UnitOfMeasure unitOfMeasure; //Поле не может быть null
-    private Person owner; //Поле не может быть null
+    private int id;
+    private final String name;
+    private Coordinates coordinates;
+    private LocalDateTime creationDate;
+    private Double price;
+    private String partNumber;
+    private Float manufactureCost;
+    private UnitOfMeasure unitOfMeasure;
+    private Person owner;
+
+    private final static String format = "%-30s%-20s%-20s%n";
 
     private static int idCounter;
 
     static {
         idCounter = 1;
     }
-
     {
         creationDate = LocalDateTime.now();
     }
@@ -56,8 +57,8 @@ public class Product implements Comparable<Product>, Serializable {
     public boolean checkNull() {
         try {
             return name == null || name.isEmpty() || coordinates == null ||
-                    coordinates.getX() == null || coordinates.getY() <= -50 ||
-                    creationDate == null || price <= 0 ||
+                    coordinates.getX() == null || coordinates.getX() >= 82 || coordinates.getY() <= -50 ||
+                    creationDate == null || price == null || price <= 0 ||
                     partNumber == null || partNumber.length() < 21 ||
                     manufactureCost == null || unitOfMeasure == null || owner == null ||
                     owner.getName() == null || owner.getName().isEmpty() ||
@@ -67,6 +68,7 @@ public class Product implements Comparable<Product>, Serializable {
             return true;
         }
     }
+
     /**
      * Устанавливает id орпеделенному элементу коллекции.
      *
@@ -123,8 +125,59 @@ public class Product implements Comparable<Product>, Serializable {
 
     @Override
     public int compareTo(Product o) {
-        return (int) ((this.getPrice() - o.getPrice()) * 100);
+        return (int) ((this.getPrice() - o.getPrice()) * 1000000);
     }
+
+    public void printCheck() {
+
+        String s = String.format(format, "Поле", "Значение", "Требование");
+        if (this == null) s += String.format(format, "Product", "null", "Ты шо, дорашка?");
+        else {
+            if (name == null || name.isEmpty())
+                s += String.format(format, "String name", name, "Поле не может быть null, Строка не может быть пустой");
+            if (coordinates == null)
+                s += String.format(format, "Coordinates coordinates", coordinates, "Поле не может быть null");
+            else {
+                if (coordinates.getY() <= -50) {
+                    s += String.format(format, "(coordinates)Long y ", coordinates.getY(), "Значение поля должно быть больше -244, Поле не может быть null");
+                }
+                if (coordinates.getX() == null || coordinates.getX() >= 82) {
+                    s += String.format(format, "(coordinates)Long y ", coordinates.getY(), "Максимальное значение поля: 82, Поле не может быть null");
+                }
+            }
+            if (price == null || price <= 0) {
+                s += String.format(format, "Double price", price, "Поле может быть null, Значение поля должно быть больше 0");
+            }
+            if (partNumber == null || partNumber.length() < 21) {
+                s += String.format(format, "String partNumber", partNumber, "Длина строки должна быть не меньше 21, Поле не может быть null");
+            }
+            if (manufactureCost == null) {
+                s += String.format(format, "Float manufactureCost", manufactureCost, "Поле не может быть null");
+            }
+            if (unitOfMeasure == null) {
+                s += String.format(format, "UnitOfMeasure unitOfMeasure", unitOfMeasure, "Поле не может быть null");
+            }
+            if (owner == null) {
+                s += String.format(format, "Person owner", owner, "Поле не может быть null");
+            } else {
+                if (owner.getName() == null || owner.getName().isEmpty()) {
+                    s += String.format(format, "(owner)String name", owner.getName(), "Длина строки должна быть не меньше 21, Поле не может быть null");
+                }
+                if (owner.getBirthday() == null) {
+                    s += String.format(format, "(owner)LocalDateTime birthday", owner.getBirthday(), "Поле не может быть null");
+                }
+                if (owner.getEyeColor() == null) {
+                    s += String.format(format, "(owner)Color eyeColor", owner.getEyeColor(), "Поле не может быть null");
+                }
+                if (owner.getHairColor() == null) {
+                    s += String.format(format, "(owner)Color hairColor", owner.getEyeColor(), "Поле не может быть null");
+                }
+            }
+        }
+        System.out.println(s);
+    }
+
+
     public static String printRequest() {
         return ("------------------------\n" +
                 "Требования к элементу:\n" +
@@ -142,7 +195,7 @@ public class Product implements Comparable<Product>, Serializable {
                 "    Float x --- Максимальное значение поля: 82, Поле не может быть null\n" +
                 "    Long y --- Значение поля должно быть больше -244, Поле не может быть null\n" +
                 "}\n" +
-                "Person: {\n" +
+                "Person : {\n" +
                 "    String name --- Поле не может быть null, Строка не может быть пустой\n" +
                 "    java.time.LocalDateTime birthday --- Поле не может быть null\n" +
                 "    Color eyeColor --- Поле не может быть null\n" +
@@ -161,6 +214,7 @@ public class Product implements Comparable<Product>, Serializable {
                 "    BLUE,\n" +
                 "    YELLOW;\n}");
     }
+
     @Override
     public String toString() {
         return "------------------------------------------------------------------------\n" +

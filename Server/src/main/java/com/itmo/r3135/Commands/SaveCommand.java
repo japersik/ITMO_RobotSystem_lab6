@@ -30,7 +30,7 @@ public class SaveCommand extends AbstractCommand {
      */
     @Override
     public ServerMessage activate(Command command) {
-
+        logger.info("Save-process started.");
         HashSet<Product> products = collection.getProducts();
         File jsonFile = collection.getJsonFile();
         Gson gson = new Gson();
@@ -67,7 +67,6 @@ public class SaveCommand extends AbstractCommand {
             collection.updateDateSave();
         } catch (IOException e) {
             logger.error("Error working with the file");
-//            System.out.println("Возникла ошибка работы с файлом");
         }
         return null;
     }

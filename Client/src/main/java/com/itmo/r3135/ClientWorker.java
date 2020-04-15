@@ -28,7 +28,7 @@ public class ClientWorker {
         datagramChannel.configureBlocking(false);
     }
 
-    public void startWork() throws IOException, InterruptedException {
+    public void startWork() throws IOException {
         String commandString = "";
         try (Scanner commandReader = new Scanner(System.in)) {
             System.out.print("//: ");
@@ -55,6 +55,8 @@ public class ClientWorker {
                 }
                 System.out.print("//: ");
             }
+        }catch (InterruptedException e){
+            System.out.println("Ошибка при попытке считать ответ от сервера.");
         }
     }
 
