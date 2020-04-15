@@ -18,7 +18,12 @@ public class SpamerWorker {
     private DatagramChannel datagramChannel = DatagramChannel.open();
     private SocketAddress socketAddress;
     private StringCommandManager stringCommandManager;
-    private CommandList[] commandLists = {CommandList.HELP, CommandList.INFO, CommandList.ADD, CommandList.SHOW, CommandList.UPDATE, CommandList.REMOVE_BY_ID, CommandList.CLEAR, CommandList.EXECUTE_SCRIPT, CommandList.ADD_IF_MIN, CommandList.REMOVE_GREATER, CommandList.REMOVE_LOWER, CommandList.GROUP_COUNTING_BY_COORDINATES, CommandList.FILTER_CONTAINS_NAME, CommandList.PRINT_FIELD_DESCENDING_PRICE, CommandList.CHECK};
+    private CommandList[] commandLists = {CommandList.HELP, CommandList.INFO, CommandList.ADD, CommandList.SHOW, CommandList.UPDATE, CommandList.REMOVE_BY_ID,
+            //CommandList.CLEAR,
+            CommandList.EXECUTE_SCRIPT, CommandList.ADD_IF_MIN,
+            //CommandList.REMOVE_GREATER,
+            // CommandList.REMOVE_LOWER,
+             CommandList.GROUP_COUNTING_BY_COORDINATES, CommandList.FILTER_CONTAINS_NAME, CommandList.PRINT_FIELD_DESCENDING_PRICE, CommandList.CHECK};
 
     {
         stringCommandManager = new StringCommandManager();

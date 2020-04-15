@@ -46,6 +46,7 @@ public class StringCommandManager {
                             command = new Command(CommandList.ADD, product);
                         else {
                             System.out.println("Элемент "+product.getName()+ " не удовлетворяет требованиям коллекции.");
+                            product.printCheck();
                             command = null;
                         }
                         break;
@@ -56,6 +57,7 @@ public class StringCommandManager {
                             command = new Command(CommandList.UPDATE, product, id);
                         else {
                             System.out.println("Элемент "+product.getName()+ " не удовлетворяет требованиям коллекции.");
+                            product.printCheck();
                             command = null;
                         }
                         break;
@@ -84,6 +86,7 @@ public class StringCommandManager {
                         if (!product.checkNull()) command = new Command(CommandList.ADD_IF_MIN, product);
                         else {
                             System.out.println("Элемент "+product.getName()+ " не удовлетворяет требованиям коллекции.");
+                            product.printCheck();
                             command = null;
                         }
                         break;
@@ -92,6 +95,7 @@ public class StringCommandManager {
                         if (!product.checkNull()) return new Command(CommandList.REMOVE_GREATER, product);
                         else {
                             System.out.println("Элемент "+product.getName()+" не удовлетворяет требованиям коллекции");
+                            product.printCheck();
                             command = null;
                         }
                         break;
@@ -100,6 +104,7 @@ public class StringCommandManager {
                         if (!product.checkNull()) return new Command(CommandList.REMOVE_LOWER, product);
                         else {
                             System.out.println("Элемент "+product.getName()+ " не удовлетворяет требованиям коллекции.");
+                            System.out.println(Product.printRequest());
                             command = null;
                         }
                         break;
