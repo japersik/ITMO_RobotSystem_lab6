@@ -5,7 +5,10 @@ import java.net.InetSocketAddress;
 import java.net.PortUnreachableException;
 import java.net.SocketAddress;
 import java.nio.channels.UnresolvedAddressException;
+import java.util.LinkedHashSet;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Stream;
 //Обязанности клиентского приложения:
 //есть-Чтение команд из консоли.
 //Валидация вводимых данных.
@@ -17,9 +20,10 @@ public class ClientMain {
     public static void main(String[] args) {
 
 
+
         Scanner input = new Scanner(System.in);
         while (true) {
-       //     System.out.println("Внимание! В тестовых целях сервер может обрабатывает 1 сообщение в 3 секунды!!!");
+            //     System.out.println("Внимание! В тестовых целях сервер может обрабатывает 1 сообщение в 3 секунды!!!");
             System.out.println("Для начала работы с коллекцией ведите адрес сервера в формате \"адрес:порт\" или 'exit' для завершенеия программы.");
             System.out.print("//: ");
             if (!input.hasNextLine()) {
