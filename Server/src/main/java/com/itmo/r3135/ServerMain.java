@@ -16,6 +16,7 @@ public class ServerMain {
     private final static String FILENAME = "file.json";
 
     public static void main(String[] args) throws IOException {
+
         logger.info("The program started.");
         Scanner input = new Scanner(System.in);
         logger.info("The port reader started.");
@@ -30,7 +31,6 @@ public class ServerMain {
             if (inputString.equals("exit")) {
                 logger.info("The program has completed.");
                 System.exit(0);
-
             } else {
                 try {
                     int port = Integer.valueOf(inputString);

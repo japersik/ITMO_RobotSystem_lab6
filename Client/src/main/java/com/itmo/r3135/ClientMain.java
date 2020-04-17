@@ -5,22 +5,10 @@ import java.net.InetSocketAddress;
 import java.net.PortUnreachableException;
 import java.net.SocketAddress;
 import java.nio.channels.UnresolvedAddressException;
-import java.util.LinkedHashSet;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.stream.Stream;
-//Обязанности клиентского приложения:
-//есть-Чтение команд из консоли.
-//Валидация вводимых данных.
-//есть-Сериализация введённой команды и её аргументов.
-//есть-Отправка полученной команды и её аргументов на сервер.
-//Обработка ответа от сервера (вывод результата исполнения команды в консоль).
 
 public class ClientMain {
     public static void main(String[] args) {
-
-
-
         Scanner input = new Scanner(System.in);
         while (true) {
             //     System.out.println("Внимание! В тестовых целях сервер может обрабатывает 1 сообщение в 3 секунды!!!");
@@ -37,6 +25,10 @@ public class ClientMain {
                     String[] trimString = inputString.trim().split(":", 2);
                     String addres = trimString[0];
                     int port = Integer.valueOf(trimString[1]);
+                    if (port < 0 || port > 65535) {
+                        System.out.println("Порт - число от 0 до 65535.");
+                        continue;
+                    }
                     SocketAddress socketAddress = new InetSocketAddress(addres, port);
                     System.out.println("Запуск прошёл успешно, Потр: " + port + ". Адрес: " + socketAddress);
                     ClientWorker worker = new ClientWorker(socketAddress);
@@ -44,22 +36,20 @@ public class ClientMain {
                         worker.startWork();
                         break;
                     }
-                    ;
                 } catch (NumberFormatException e) {
                     System.out.println("Ошибка в записи номера порта.");
                 } catch (IndexOutOfBoundsException | UnresolvedAddressException e) {
                     System.out.println("Адрес введён некорректно.");
                 } catch (PortUnreachableException e) {
                     System.out.println("Похоже, сервер по этому адрусе недоступен");
-                } catch (IOException | InterruptedException e) {
-                    System.out.println(e);
+                } catch (InterruptedException e) {
+                    System.out.println("Не знаю как, но InterruptedException. Обратитесь в тех.поддержку, которой нет.");
+                } catch (IOException e) {
+                    System.out.println("Не знаю как, но IOException. Обратитесь в тех.поддержку, которой нет.");
                 }
             }
-
         }
         System.out.println("Работа программы завершена.");
         System.exit(0);
     }
-
-
 }

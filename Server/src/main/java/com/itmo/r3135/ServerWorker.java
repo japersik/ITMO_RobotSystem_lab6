@@ -161,19 +161,19 @@ public class ServerWorker implements Mediator {
     public void datagrammWork() {
         while (true) {
             try {
+
                 Command command = reader.nextCommand();
                 SEMAPHORE.acquire();
                 logger.info("New command " + command.getCommand() + " from " + reader.getInput().getSocketAddress() + ".");
-//                System.out.println(command.getCommand());
-//                System.out.println(command.getString());
                 ServerMessage message = processing(command);
                 logger.info("Command complete.");
                 logger.info("Sending server message.");
                 sender.send(message, reader.getInput());
 //                Thread.sleep(3000);// Для отладки
-                SEMAPHORE.release();
             } catch (IOException | InterruptedException e) {
                 logger.error("Error in receive-send of command!!!");
+            } finally {
+                SEMAPHORE.release();
             }
         }
     }

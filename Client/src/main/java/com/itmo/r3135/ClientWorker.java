@@ -28,7 +28,7 @@ public class ClientWorker {
         datagramChannel.configureBlocking(false);
     }
 
-    public void startWork() throws IOException, InterruptedException {
+    public void startWork() throws IOException {
         String commandString = "";
         try (Scanner commandReader = new Scanner(System.in)) {
             System.out.print("//: ");
@@ -36,25 +36,31 @@ public class ClientWorker {
                 if (!commandReader.hasNextLine()) {
                     break;
                 } else {
-                    commandString = commandReader.nextLine();
-                    Command command = stringCommandManager.getCommandFromString(commandString);
-                    if (command != null) {
-                        if (this.connectionCheck()) {
-                            manager.send(command);
-                            ServerMessage message = manager.recive();
-                            if (message != null) {
-                                if (message.getMessage() != null)
-                                    System.out.println(message.getMessage());
-                                if (message.getProducts() != null)
-                                    for (Product p : message.getProducts()) System.out.println(p);
-                            } else System.out.println("Ответ cервера некорректен");
-                        } else System.out.println("Подключение потеряно.");
-                    } else {
-                        System.out.println("Команда не была отправлена.");
+                    try {
+                        commandString = commandReader.nextLine();
+                        Command command = stringCommandManager.getCommandFromString(commandString);
+                        if (command != null) {
+                            if (this.connectionCheck()) {
+                                manager.send(command);
+                                ServerMessage message = manager.recive();
+                                if (message != null) {
+                                    if (message.getMessage() != null)
+                                        System.out.println(message.getMessage());
+                                    if (message.getProducts() != null)
+                                        for (Product p : message.getProducts()) System.out.println(p);
+                                } else System.out.println("Ответ cервера некорректен");
+                            } else System.out.println("Подключение потеряно.");
+                        } else {
+                            System.out.println("Команда не была отправлена.");
+                        }
+                    } catch (NullPointerException e) {
+                        System.out.println("NullPointerException! Скорее всего неверно указана дата при создании объекта.");
                     }
                 }
                 System.out.print("//: ");
             }
+        } catch (InterruptedException e) {
+            System.out.println("Ошибка при попытке считать ответ от сервера.");
         }
     }
 

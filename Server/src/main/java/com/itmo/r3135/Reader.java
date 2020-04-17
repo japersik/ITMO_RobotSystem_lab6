@@ -10,7 +10,7 @@ import java.net.DatagramSocket;
 
 public class Reader {
     DatagramSocket socket;
-    private byte[] b = new byte[10000];
+    private byte[] b = new byte[65535];
     private DatagramPacket input = new DatagramPacket(b, b.length);
 
     public Reader(DatagramSocket socket) {
