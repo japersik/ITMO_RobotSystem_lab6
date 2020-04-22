@@ -25,6 +25,8 @@ public class ServerWorker implements Mediator {
     private Sender sender;
     private Reader reader;
 
+
+
     private AbstractCommand loadCollectionCommand;
     private AbstractCommand addCommand;
     private AbstractCommand showCommand;
