@@ -27,7 +27,7 @@ public class RemoveByIdCommand extends AbstractCommand {
         int startSize = products.size();
         if (products.size() > 0) {
             int id = command.getIntValue();
-            products.removeAll((products.stream().filter(product -> product.getId() == id)
+            products.removeAll((products.parallelStream().filter(product -> product.getId() == id)
                     .collect(Collectors.toCollection(HashSet::new))));
             if (startSize == products.size()) {
                 return new ServerMessage("Элемент с id " + id + " не существует.");

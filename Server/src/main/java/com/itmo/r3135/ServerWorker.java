@@ -23,7 +23,7 @@ public class ServerWorker implements Mediator {
     private Gson gson;
     private Collection collection;
     private Sender sender;
-    private Reader reader;+
+    private Reader reader;
 
 
 

@@ -27,16 +27,16 @@ public class GroupCountingByCoordinatesCommand extends AbstractCommand {
         if (!products.isEmpty()) {
             final String[] s = {new String()};
             s[0] = s[0] + String.format("%20s%n", "Первая четверть");
-            products.stream().filter(product -> product.getCoordinates().getX() >= 0 & product.getCoordinates().getY() >= 0)
+            products.parallelStream().filter(product -> product.getCoordinates().getX() >= 0 & product.getCoordinates().getY() >= 0)
                     .forEach(product -> s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(), product.getId(), product.getCoordinates().toString()));
             s[0] = s[0] + String.format("%20s%n", "Вторая четверть");
-            products.stream().filter(product -> product.getCoordinates().getX() < 0 & product.getCoordinates().getY() >= 0)
+            products.parallelStream().filter(product -> product.getCoordinates().getX() < 0 & product.getCoordinates().getY() >= 0)
                     .forEach(product -> s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(), product.getId(), product.getCoordinates().toString()));
             s[0] = s[0] + String.format("%20s%n", "Третья четверть");
-            products.stream().filter(product -> product.getCoordinates().getX() < 0 & product.getCoordinates().getY() < 0)
+            products.parallelStream().filter(product -> product.getCoordinates().getX() < 0 & product.getCoordinates().getY() < 0)
                     .forEach(product -> s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(), product.getId(), product.getCoordinates().toString()));
             s[0] = s[0] + String.format("%20s%n", "Четвер четверть");
-            products.stream().filter(product -> product.getCoordinates().getX() >= 0 & product.getCoordinates().getY() < 0)
+            products.parallelStream().filter(product -> product.getCoordinates().getX() >= 0 & product.getCoordinates().getY() < 0)
                     .forEach(product -> s[0] = s[0] + String.format("%-40s%-12s%-25s%n", product.getName(), product.getId(), product.getCoordinates().toString()));
             return new ServerMessage(s[0]);
 
